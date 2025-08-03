@@ -1,0 +1,143 @@
+.app {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  background-color: var(--color-gray-50);
+}
+
+/* Header */
+.header {
+  background-color: white;
+  border-bottom: 1px solid var(--color-gray-200);
+  padding: var(--spacing-lg) 0;
+  box-shadow: var(--shadow-sm);
+}
+
+.headerContent {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 var(--spacing-lg);
+  text-align: center;
+}
+
+.title {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--spacing-sm);
+  font-size: var(--font-size-2xl);
+  font-weight: 700;
+  color: var(--color-gray-900);
+  margin-bottom: var(--spacing-sm);
+}
+
+.subtitle {
+  font-size: var(--font-size-base);
+  color: var(--color-gray-600);
+  margin: 0;
+}
+
+/* Main */
+.main {
+  flex: 1;
+  padding: var(--spacing-xl) 0;
+}
+
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 var(--spacing-lg);
+}
+
+/* View Toggle */
+.viewToggle {
+  display: flex;
+  justify-content: center;
+  gap: var(--spacing-sm);
+  margin-bottom: var(--spacing-xl);
+}
+
+.toggleButton {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-xs);
+  min-width: 140px;
+}
+
+/* Wizard Container */
+.wizardContainer {
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+/* Preview Container */
+.previewContainer {
+  max-width: 900px;
+  margin: 0 auto;
+  padding: var(--spacing-lg);
+  background-color: white;
+  border-radius: var(--border-radius-lg);
+  box-shadow: var(--shadow-md);
+}
+
+/* Footer */
+.footer {
+  background-color: white;
+  border-top: 1px solid var(--color-gray-200);
+  padding: var(--spacing-lg) 0;
+  text-align: center;
+}
+
+.footer p {
+  font-size: var(--font-size-sm);
+  color: var(--color-gray-500);
+  margin: 0;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .headerContent {
+    padding: 0 var(--spacing-md);
+  }
+
+  .title {
+    font-size: var(--font-size-xl);
+  }
+
+  .container {
+    padding: 0 var(--spacing-md);
+  }
+
+  .viewToggle {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .toggleButton {
+    width: 100%;
+    max-width: 200px;
+  }
+
+  .previewContainer {
+    padding: var(--spacing-md);
+    margin: 0 var(--spacing-md);
+  }
+}
+
+@media (max-width: 480px) {
+  .header {
+    padding: var(--spacing-md) 0;
+  }
+
+  .main {
+    padding: var(--spacing-lg) 0;
+  }
+
+  .title {
+    font-size: var(--font-size-lg);
+  }
+
+  .subtitle {
+    font-size: var(--font-size-sm);
+  }
+}

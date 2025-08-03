@@ -1,0 +1,110 @@
+.wizard {
+  max-width: 600px;
+  margin: 0 auto;
+  padding: var(--spacing-lg);
+}
+
+/* Progress Bar */
+.progressContainer {
+  margin-bottom: var(--spacing-xl);
+}
+
+.progressBar {
+  width: 100%;
+  height: 8px;
+  background-color: var(--color-gray-200);
+  border-radius: var(--border-radius-sm);
+  overflow: hidden;
+  margin-bottom: var(--spacing-sm);
+}
+
+.progressFill {
+  height: 100%;
+  background-color: var(--color-primary);
+  transition: width 0.3s ease-in-out;
+}
+
+.stepIndicator {
+  text-align: center;
+  font-size: var(--font-size-sm);
+  color: var(--color-gray-600);
+  font-weight: 500;
+}
+
+/* Step Title */
+.stepTitle {
+  text-align: center;
+  margin-bottom: var(--spacing-lg);
+}
+
+.stepTitle h2 {
+  font-size: var(--font-size-2xl);
+  font-weight: 600;
+  color: var(--color-gray-900);
+  margin-bottom: var(--spacing-sm);
+}
+
+.stepDescription {
+  font-size: var(--font-size-base);
+  color: var(--color-gray-600);
+  margin: 0;
+}
+
+/* Form Card */
+.formCard {
+  margin-bottom: var(--spacing-xl);
+}
+
+/* Navigation */
+.navigation {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: var(--spacing-md);
+}
+
+.navButton {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-xs);
+  min-width: 120px;
+}
+
+.navCenter {
+  flex: 1;
+  display: flex;
+  justify-content: center;
+}
+
+.downloadButton {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-xs);
+  min-width: 160px;
+}
+
+/* Responsive */
+@media (max-width: 640px) {
+  .wizard {
+    padding: var(--spacing-md);
+  }
+
+  .stepTitle h2 {
+    font-size: var(--font-size-xl);
+  }
+
+  .navigation {
+    flex-direction: column;
+    gap: var(--spacing-sm);
+  }
+
+  .navButton,
+  .downloadButton {
+    width: 100%;
+    justify-content: center;
+  }
+
+  .navCenter {
+    order: -1;
+  }
+}
