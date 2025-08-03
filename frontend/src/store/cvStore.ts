@@ -51,7 +51,7 @@ const initialCVData: CVFormData = {
   education: [],
 };
 
-export const useCVStore = create<CVStore>((set, get) => ({
+export const useCVStore = create<CVStore>((set) => ({
   // Estado inicial
   cvData: initialCVData,
   currentStep: 0,

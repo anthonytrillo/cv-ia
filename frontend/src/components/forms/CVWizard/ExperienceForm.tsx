@@ -7,7 +7,7 @@ import { Plus, X, Trash2 } from 'lucide-react';
 import styles from './ExperienceForm.module.css';
 
 export const ExperienceForm = () => {
-  const { cvData, addExperience, removeExperience, updateExperience } = useCVStore();
+  const { cvData, addExperience, removeExperience } = useCVStore();
   const [showAddForm, setShowAddForm] = useState(false);
   const [newExperience, setNewExperience] = useState({
     jobTitle: '',

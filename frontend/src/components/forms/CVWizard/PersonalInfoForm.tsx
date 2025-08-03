@@ -4,7 +4,6 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
 import { useCVStore } from '../../../store/cvStore';
 import { Input } from '../../ui/Input';
-import type { PersonalInfo } from '../../../types/cv';
 
 const personalInfoSchema = z.object({
   fullName: z.string()
@@ -41,7 +40,7 @@ export const PersonalInfoForm = () => {
     register,
     handleSubmit,
     watch,
-    formState: { errors, isValid },
+    formState: { errors },
   } = useForm<PersonalInfoFormData>({
     resolver: zodResolver(personalInfoSchema),
     defaultValues: cvData.personalInfo,
