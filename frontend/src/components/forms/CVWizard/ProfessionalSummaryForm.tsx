@@ -56,9 +56,9 @@ export const ProfessionalSummaryForm = () => {
       <div>
         <Textarea
           label="Resumen Profesional *"
-          placeholder="Describe tu perfil profesional, objetivos y principales logros. Incluye información sobre tu experiencia, habilidades destacadas y lo que te hace único como profesional."
+          placeholder="Describe tu experiencia en atención al cliente, tu enfoque para resolver problemas, y cómo has contribuido a mejorar la satisfacción del cliente. Incluye ejemplos de logros específicos y tu filosofía de servicio al cliente."
           error={errors.summary?.message}
-          helperText="Mínimo 50 caracteres. Describe tu experiencia, objetivos y logros principales."
+          helperText="Mínimo 50 caracteres. Describe tu experiencia en atención al cliente, logros y enfoque de servicio."
           rows={6}
           {...register('summary')}
         />
@@ -69,7 +69,7 @@ export const ProfessionalSummaryForm = () => {
         <p className="mt-2">
           <strong>Consejo:</strong> Escribe un resumen que capture la atención del reclutador
           en los primeros segundos. Incluye tu experiencia más relevante, logros cuantificables
-          y lo que te hace destacar en tu campo.
+          y lo que te hace destacar en tu campo profesional.
         </p>
       </div>
     </form>

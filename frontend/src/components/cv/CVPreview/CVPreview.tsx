@@ -38,7 +38,7 @@ export const CVPreview = () => {
         <div className={styles.buttonGroup}>
           <Button
             onClick={handleLoadSampleData}
-            variant="outline"
+            variant="sampleData"
             size="md"
           >
             <FileText size={16} />
@@ -47,7 +47,7 @@ export const CVPreview = () => {
           <Button
             onClick={handleDownloadPDF}
             loading={isDownloading}
-            variant="primary"
+            variant="download"
             size="md"
           >
             <Download size={16} />

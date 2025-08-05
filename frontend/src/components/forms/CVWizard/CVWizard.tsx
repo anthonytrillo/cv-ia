@@ -9,6 +9,7 @@ import { Button } from '../../ui/Button';
 import { Card } from '../../ui/Card';
 import { ChevronLeft, ChevronRight, Download } from 'lucide-react';
 import styles from './CVWizard.module.css';
+import { downloadPDF } from '../../../services/pdfService';
 
 const STEPS = [
   { id: 0, title: 'Información Personal', component: PersonalInfoForm },
@@ -92,9 +93,15 @@ export const CVWizard = () => {
     prevStep();
   };
 
-  const handleDownload = () => {
-    // TODO: Implementar descarga de PDF
-    console.log('Descargando CV...', cvData);
+  const handleDownload = async () => {
+    const filename = `${cvData.personalInfo.fullName || 'CV'}.pdf`;
+
+    try {
+      await downloadPDF(cvData, filename);
+    } catch (error) {
+      console.error('Error downloading PDF:', error);
+      alert('Error al descargar el PDF. Por favor, inténtalo de nuevo.');
+    }
   };
 
   return (
@@ -168,10 +175,10 @@ export const CVWizard = () => {
 const getStepDescription = (step: number): string => {
   const descriptions = [
     'Completa tu información personal básica',
-    'Describe tu perfil profesional y objetivos',
-    'Agrega tus habilidades y competencias',
-    'Incluye tu experiencia laboral',
-    'Agrega tu formación académica'
+    'Describe tu experiencia en atención al cliente y objetivos profesionales',
+    'Agrega tus habilidades en servicio al cliente y resolución de problemas',
+    'Incluye tu experiencia laboral en atención al cliente',
+    'Agrega tu formación académica y certificaciones'
   ];
   return descriptions[step] || '';
 }; 

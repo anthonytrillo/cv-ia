@@ -192,14 +192,14 @@ export const EducationForm = () => {
           <div className={styles.formGrid}>
             <Input
               label="Título/Certificación *"
-              placeholder="Ej: Licenciatura en Informática"
+              placeholder="Ej: Técnico Superior en Administración y Gestión"
               value={newEducation.degree}
               onChange={(e) => setNewEducation(prev => ({ ...prev, degree: e.target.value }))}
             />
 
             <Input
               label="Institución *"
-              placeholder="Ej: Universidad de Barcelona"
+              placeholder="Ej: IES Comercial de Madrid"
               value={newEducation.institution}
               onChange={(e) => setNewEducation(prev => ({ ...prev, institution: e.target.value }))}
             />
@@ -226,7 +226,7 @@ export const EducationForm = () => {
 
           <Textarea
             label="Descripción"
-            placeholder="Describe brevemente tu formación y especialización"
+            placeholder="Describe tu formación y especialización en atención al cliente o gestión empresarial"
             value={newEducation.description}
             onChange={(e) => setNewEducation(prev => ({ ...prev, description: e.target.value }))}
             rows={3}
@@ -237,7 +237,7 @@ export const EducationForm = () => {
             {newEducation.highlights.map((highlight, index) => (
               <div key={index} className={styles.highlightItem}>
                 <Input
-                  placeholder="Ej: Especialización en Machine Learning"
+                  placeholder="Ej: Certificación en Atención al Cliente"
                   value={highlight}
                   onChange={(e) => handleHighlightChange(index, e.target.value)}
                 />

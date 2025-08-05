@@ -51,6 +51,29 @@
   color: white;
 }
 
+/* Nuevas variantes para botones específicos */
+.sampleData {
+  background-color: var(--color-sample-data);
+  color: white;
+  border-color: var(--color-sample-data);
+}
+
+.sampleData:hover:not(:disabled) {
+  background-color: var(--color-sample-data-dark);
+  border-color: var(--color-sample-data-dark);
+}
+
+.download {
+  background-color: var(--color-download);
+  color: white;
+  border-color: var(--color-download);
+}
+
+.download:hover:not(:disabled) {
+  background-color: var(--color-download-dark);
+  border-color: var(--color-download-dark);
+}
+
 /* Tamaños */
 .sm {
   padding: var(--spacing-xs) var(--spacing-md);

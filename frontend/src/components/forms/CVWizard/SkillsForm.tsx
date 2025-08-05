@@ -35,7 +35,7 @@ export const SkillsForm = () => {
       <div className={styles.addSkill}>
         <Input
           label="Agregar Habilidad"
-          placeholder="Ej: JavaScript, Liderazgo, Excel..."
+          placeholder="Ej: Atención al Cliente, Resolución de Conflictos, CRM..."
           value={newSkill}
           onChange={(e) => setNewSkill(e.target.value)}
           onKeyPress={handleKeyPress}
@@ -77,7 +77,7 @@ export const SkillsForm = () => {
       <div className={styles.helpText}>
         <p>
           <strong>Consejo:</strong> Incluye tanto habilidades técnicas como blandas.
-          Las habilidades técnicas son específicas de tu campo (ej: React, Python, Excel),
+          Las habilidades técnicas son específicas de tu campo profesional,
           mientras que las blandas son transferibles (ej: Liderazgo, Comunicación, Trabajo en equipo).
         </p>
       </div>

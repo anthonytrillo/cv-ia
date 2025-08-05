@@ -121,14 +121,14 @@ export const ExperienceForm = () => {
           <div className={styles.formGrid}>
             <Input
               label="Cargo *"
-              placeholder="Ej: Desarrollador Frontend"
+              placeholder="Ej: Agente de Atención al Cliente"
               value={newExperience.jobTitle}
               onChange={(e) => setNewExperience(prev => ({ ...prev, jobTitle: e.target.value }))}
             />
 
             <Input
               label="Empresa *"
-              placeholder="Ej: Google, Microsoft"
+              placeholder="Ej: ServiCorp Solutions, CustomerCare Plus"
               value={newExperience.company}
               onChange={(e) => setNewExperience(prev => ({ ...prev, company: e.target.value }))}
             />
@@ -162,7 +162,7 @@ export const ExperienceForm = () => {
 
           <Textarea
             label="Descripción"
-            placeholder="Describe brevemente tus responsabilidades principales"
+            placeholder="Describe tus responsabilidades en atención al cliente, canales de atención y tipo de consultas que manejabas"
             value={newExperience.description}
             onChange={(e) => setNewExperience(prev => ({ ...prev, description: e.target.value }))}
             rows={3}
@@ -173,7 +173,7 @@ export const ExperienceForm = () => {
             {newExperience.achievements.map((achievement, index) => (
               <div key={index} className={styles.achievementItem}>
                 <Input
-                  placeholder="Ej: Incrementé las ventas en un 25%"
+                  placeholder="Ej: Reduje el tiempo de respuesta promedio de 24h a 4h"
                   value={achievement}
                   onChange={(e) => handleAchievementChange(index, e.target.value)}
                 />

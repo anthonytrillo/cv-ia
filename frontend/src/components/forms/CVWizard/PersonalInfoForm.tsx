@@ -80,7 +80,7 @@ export const PersonalInfoForm = () => {
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
         <Input
           label="Nombre Completo *"
-          placeholder="Ej: Juan Pérez García"
+          placeholder="Ej: María Rodríguez Sánchez"
           error={errors.fullName?.message}
           {...register('fullName')}
         />
@@ -88,7 +88,7 @@ export const PersonalInfoForm = () => {
         <Input
           label="Email *"
           type="email"
-          placeholder="tu.email@ejemplo.com"
+          placeholder="maria.rodriguez@email.com"
           error={errors.email?.message}
           {...register('email')}
         />
@@ -96,7 +96,7 @@ export const PersonalInfoForm = () => {
         <Input
           label="Teléfono *"
           type="tel"
-          placeholder="+34 123 456 789"
+          placeholder="+34 612 345 678"
           error={errors.phone?.message}
           {...register('phone')}
         />
@@ -106,15 +106,16 @@ export const PersonalInfoForm = () => {
           type="url"
           placeholder="https://linkedin.com/in/tu-perfil"
           error={errors.linkedin?.message}
-          helperText="Opcional"
+          helperText="Opcional - Útil para mostrar tu experiencia profesional"
           {...register('linkedin')}
         />
       </div>
 
       <Input
         label="Título Profesional *"
-        placeholder="Ej: Desarrollador Full Stack, Community Builder, etc."
+        placeholder="Ej: Especialista en Atención al Cliente, Agente de Soporte, etc."
         error={errors.professionalTitle?.message}
+        helperText="Describe tu rol actual o el puesto que buscas"
         {...register('professionalTitle')}
       />
 
