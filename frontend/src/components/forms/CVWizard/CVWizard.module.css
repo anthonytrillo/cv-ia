@@ -1,5 +1,5 @@
 .wizard {
-  max-width: 600px;
+  max-width: 800px;
   margin: 0 auto;
   padding: var(--spacing-lg);
 }
@@ -12,42 +12,46 @@
 .progressBar {
   width: 100%;
   height: 8px;
-  background-color: var(--color-gray-200);
+  background-color: var(--bg-secondary);
   border-radius: var(--border-radius-sm);
   overflow: hidden;
   margin-bottom: var(--spacing-sm);
+  transition: background-color 0.3s ease;
 }
 
 .progressFill {
   height: 100%;
   background-color: var(--color-primary);
-  transition: width 0.3s ease-in-out;
+  transition: width 0.3s ease;
 }
 
 .stepIndicator {
   text-align: center;
   font-size: var(--font-size-sm);
-  color: var(--color-gray-600);
+  color: var(--text-secondary);
   font-weight: 500;
+  transition: color 0.3s ease;
 }
 
 /* Step Title */
 .stepTitle {
   text-align: center;
-  margin-bottom: var(--spacing-lg);
+  margin-bottom: var(--spacing-xl);
 }
 
 .stepTitle h2 {
   font-size: var(--font-size-2xl);
   font-weight: 600;
-  color: var(--color-gray-900);
+  color: var(--text-primary);
   margin-bottom: var(--spacing-sm);
+  transition: color 0.3s ease;
 }
 
 .stepDescription {
   font-size: var(--font-size-base);
-  color: var(--color-gray-600);
-  margin: 0;
+  color: var(--text-secondary);
+  line-height: 1.5;
+  transition: color 0.3s ease;
 }
 
 /* Form Card */
@@ -61,6 +65,7 @@
   justify-content: space-between;
   align-items: center;
   gap: var(--spacing-md);
+  margin-bottom: var(--spacing-lg);
 }
 
 .navButton {
@@ -80,17 +85,45 @@
   display: flex;
   align-items: center;
   gap: var(--spacing-xs);
-  min-width: 160px;
+  min-width: 150px;
+}
+
+.clearDataSection {
+  display: flex;
+  justify-content: center;
+  padding-top: var(--spacing-lg);
+  border-top: 1px solid var(--border-primary);
+  transition: border-color 0.3s ease;
+}
+
+.clearDataButton {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-xs);
+  color: var(--color-error);
+  border-color: var(--color-error);
+  background-color: transparent;
+  transition: all 0.2s ease;
+}
+
+.clearDataButton:hover,
+.clearDataButton.outline:hover {
+  background-color: var(--color-error) !important;
+  color: white !important;
+  border-color: var(--color-error) !important;
+  transform: translateY(-1px);
+  box-shadow: var(--shadow-md);
+}
+
+.clearDataButton:active {
+  transform: translateY(0);
+  box-shadow: var(--shadow-sm);
 }
 
 /* Responsive */
-@media (max-width: 640px) {
+@media (max-width: 768px) {
   .wizard {
     padding: var(--spacing-md);
-  }
-
-  .stepTitle h2 {
-    font-size: var(--font-size-xl);
   }
 
   .navigation {
@@ -106,5 +139,29 @@
 
   .navCenter {
     order: -1;
+  }
+
+  .stepTitle h2 {
+    font-size: var(--font-size-xl);
+  }
+
+  .stepDescription {
+    font-size: var(--font-size-sm);
+  }
+}
+
+@media (max-width: 480px) {
+  .wizard {
+    padding: var(--spacing-sm);
+  }
+
+  .stepTitle h2 {
+    font-size: var(--font-size-lg);
+  }
+
+  .navButton,
+  .downloadButton {
+    font-size: var(--font-size-sm);
+    padding: var(--spacing-sm);
   }
 }

@@ -2,7 +2,7 @@
   position: fixed;
   top: 20px;
   right: 20px;
-  background-color: white;
+  background-color: var(--bg-card);
   border-radius: var(--border-radius-md);
   box-shadow: var(--shadow-lg);
   padding: var(--spacing-md);
@@ -15,6 +15,7 @@
   gap: var(--spacing-sm);
   border-left: 4px solid;
   overflow: hidden;
+  transition: all 0.3s ease;
 }
 
 .toast.success {
@@ -38,23 +39,25 @@
 
 .message {
   font-size: var(--font-size-sm);
-  color: var(--color-gray-700);
+  color: var(--text-primary);
   line-height: 1.4;
+  transition: color 0.3s ease;
 }
 
 .closeButton {
   background: none;
   border: none;
-  color: var(--color-gray-400);
+  color: var(--text-tertiary);
   cursor: pointer;
   padding: var(--spacing-xs);
   border-radius: var(--border-radius-sm);
-  transition: color 0.2s ease;
+  transition: all 0.2s ease;
   flex-shrink: 0;
 }
 
 .closeButton:hover {
-  color: var(--color-gray-600);
+  color: var(--text-secondary);
+  background-color: var(--bg-secondary);
 }
 
 /* Progress Bar */
@@ -64,7 +67,7 @@
   left: 0;
   width: 100%;
   height: 3px;
-  background-color: var(--color-gray-200);
+  background-color: var(--border-primary);
   overflow: hidden;
 }
 

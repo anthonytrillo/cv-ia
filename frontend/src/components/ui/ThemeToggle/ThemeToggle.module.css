@@ -1,0 +1,51 @@
+.themeToggle {
+  background: var(--bg-card);
+  border: 1px solid var(--border-primary);
+  border-radius: var(--border-radius-md);
+  padding: var(--spacing-sm);
+  cursor: pointer;
+  transition: all 0.2s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--text-secondary);
+  box-shadow: var(--shadow-sm);
+}
+
+.themeToggle:hover {
+  background: var(--bg-secondary);
+  border-color: var(--border-secondary);
+  color: var(--text-primary);
+  transform: translateY(-1px);
+  box-shadow: var(--shadow-md);
+}
+
+.themeToggle:active {
+  transform: translateY(0);
+  box-shadow: var(--shadow-sm);
+}
+
+.icon {
+  transition: transform 0.2s ease;
+}
+
+.themeToggle:hover .icon {
+  transform: rotate(15deg);
+}
+
+/* Focus styles for accessibility */
+.themeToggle:focus {
+  outline: 2px solid var(--border-focus);
+  outline-offset: 2px;
+}
+
+/* Dark mode specific adjustments */
+[data-theme="dark"] .themeToggle {
+  background: var(--bg-card);
+  border-color: var(--border-primary);
+}
+
+[data-theme="dark"] .themeToggle:hover {
+  background: var(--bg-tertiary);
+  border-color: var(--border-secondary);
+}

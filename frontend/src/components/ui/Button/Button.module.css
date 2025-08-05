@@ -2,123 +2,118 @@
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  font-family: var(--font-family-sans);
-  font-weight: 500;
-  border-radius: var(--border-radius-md);
+  gap: var(--spacing-xs);
+  padding: var(--spacing-sm) var(--spacing-md);
   border: 1px solid transparent;
+  border-radius: var(--border-radius-md);
+  font-size: var(--font-size-sm);
+  font-weight: 500;
   cursor: pointer;
-  transition: all 0.2s ease-in-out;
+  transition: all 0.2s ease;
   text-decoration: none;
-  gap: var(--spacing-sm);
+  font-family: inherit;
+  line-height: 1;
   white-space: nowrap;
 }
 
 .button:disabled {
-  opacity: 0.6;
+  opacity: 0.5;
   cursor: not-allowed;
+  pointer-events: none;
 }
 
-/* Variantes */
+/* Variants */
 .primary {
   background-color: var(--color-primary);
-  color: white;
+  color: var(--text-inverse);
   border-color: var(--color-primary);
 }
 
 .primary:hover:not(:disabled) {
   background-color: var(--color-primary-dark);
   border-color: var(--color-primary-dark);
+  transform: translateY(-1px);
+  box-shadow: var(--shadow-md);
 }
 
 .secondary {
-  background-color: var(--color-gray-100);
-  color: var(--color-gray-700);
-  border-color: var(--color-gray-300);
+  background-color: var(--bg-secondary);
+  color: var(--text-primary);
+  border-color: var(--border-primary);
 }
 
 .secondary:hover:not(:disabled) {
-  background-color: var(--color-gray-200);
+  background-color: var(--bg-tertiary);
+  border-color: var(--border-secondary);
+  transform: translateY(-1px);
+  box-shadow: var(--shadow-md);
 }
 
 .outline {
   background-color: transparent;
-  color: var(--color-primary);
-  border-color: var(--color-primary);
+  color: var(--text-primary);
+  border-color: var(--border-primary);
 }
 
 .outline:hover:not(:disabled) {
-  background-color: var(--color-primary);
-  color: white;
+  background-color: var(--bg-secondary);
+  border-color: var(--border-secondary);
+  transform: translateY(-1px);
+  box-shadow: var(--shadow-md);
 }
 
-/* Nuevas variantes para botones específicos */
 .sampleData {
   background-color: var(--color-sample-data);
-  color: white;
+  color: var(--text-inverse);
   border-color: var(--color-sample-data);
 }
 
 .sampleData:hover:not(:disabled) {
   background-color: var(--color-sample-data-dark);
   border-color: var(--color-sample-data-dark);
+  transform: translateY(-1px);
+  box-shadow: var(--shadow-md);
 }
 
 .download {
   background-color: var(--color-download);
-  color: white;
+  color: var(--text-inverse);
   border-color: var(--color-download);
 }
 
 .download:hover:not(:disabled) {
   background-color: var(--color-download-dark);
   border-color: var(--color-download-dark);
+  transform: translateY(-1px);
+  box-shadow: var(--shadow-md);
 }
 
-/* Tamaños */
+/* Sizes */
 .sm {
-  padding: var(--spacing-xs) var(--spacing-md);
-  font-size: var(--font-size-sm);
-  min-height: 32px;
-}
-
-.md {
-  padding: var(--spacing-sm) var(--spacing-lg);
-  font-size: var(--font-size-base);
-  min-height: 40px;
+  padding: var(--spacing-xs) var(--spacing-sm);
+  font-size: var(--font-size-xs);
 }
 
 .lg {
-  padding: var(--spacing-md) var(--spacing-xl);
-  font-size: var(--font-size-lg);
-  min-height: 48px;
+  padding: var(--spacing-md) var(--spacing-lg);
+  font-size: var(--font-size-base);
 }
 
-/* Estado de carga */
-.loading {
-  opacity: 0.8;
-  cursor: wait;
+/* Focus styles for accessibility */
+.button:focus {
+  outline: 2px solid var(--border-focus);
+  outline-offset: 2px;
 }
 
-.spinner {
-  width: 1em;
-  height: 1em;
-  border: 2px solid transparent;
-  border-top: 2px solid currentColor;
-  border-radius: 50%;
-  animation: spin 1s linear infinite;
-}
-
-@keyframes spin {
-  to {
-    transform: rotate(360deg);
-  }
+/* Active state */
+.button:active:not(:disabled) {
+  transform: translateY(0);
+  box-shadow: var(--shadow-sm);
 }
 
 /* Responsive */
-@media (max-width: 640px) {
+@media (max-width: 768px) {
   .button {
     font-size: var(--font-size-sm);
-    padding: var(--spacing-sm) var(--spacing-md);
-    min-height: 36px;
   }
 }

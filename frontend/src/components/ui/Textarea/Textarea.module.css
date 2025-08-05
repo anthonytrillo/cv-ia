@@ -14,69 +14,66 @@
 .textarea {
   width: 100%;
   padding: var(--spacing-sm) var(--spacing-md);
+  border: 1px solid var(--input-border);
+  border-radius: var(--border-radius-md);
   font-size: var(--font-size-base);
   line-height: 1.5;
-  color: var(--color-gray-900);
-  background-color: white;
-  border: 1px solid var(--color-gray-300);
-  border-radius: var(--border-radius-md);
-  transition: all 0.2s ease-in-out;
-  font-family: var(--font-family-sans);
+  background-color: var(--input-bg);
+  color: var(--input-text);
+  font-family: inherit;
   resize: vertical;
   min-height: 100px;
+  transition: all 0.2s ease;
+}
+
+.textarea::placeholder {
+  color: var(--input-placeholder);
 }
 
 .textarea:focus {
   outline: none;
-  border-color: var(--color-primary);
-  box-shadow: 0 0 0 3px rgb(37 99 235 / 0.1);
+  border-color: var(--input-border-focus);
+  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
 }
 
-.textarea::placeholder {
-  color: var(--color-gray-400);
+.textarea:disabled {
+  background-color: var(--bg-secondary);
+  color: var(--text-tertiary);
+  cursor: not-allowed;
 }
 
-/* Variantes */
-.default {
-  border-color: var(--color-gray-300);
-}
-
-.default:hover {
-  border-color: var(--color-gray-400);
-}
-
-.error {
+.textarea.error {
   border-color: var(--color-error);
 }
 
-.error:focus {
-  border-color: var(--color-error);
-  box-shadow: 0 0 0 3px rgb(220 38 38 / 0.1);
+.textarea.error:focus {
+  box-shadow: 0 0 0 3px rgba(239, 68, 68, 0.1);
 }
 
-.success {
+.textarea.success {
   border-color: var(--color-success);
 }
 
-.success:focus {
-  border-color: var(--color-success);
-  box-shadow: 0 0 0 3px rgb(5 150 105 / 0.1);
+.textarea.success:focus {
+  box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.1);
 }
 
-.helperText {
+/* Sizes */
+.sm {
+  padding: var(--spacing-xs) var(--spacing-sm);
   font-size: var(--font-size-sm);
-  color: var(--color-gray-500);
-  margin: 0;
+  min-height: 80px;
 }
 
-.helperText.error {
-  color: var(--color-error);
+.lg {
+  padding: var(--spacing-md) var(--spacing-lg);
+  font-size: var(--font-size-lg);
+  min-height: 120px;
 }
 
 /* Responsive */
-@media (max-width: 640px) {
+@media (max-width: 768px) {
   .textarea {
     font-size: var(--font-size-base);
-    padding: var(--spacing-sm) var(--spacing-md);
   }
 }

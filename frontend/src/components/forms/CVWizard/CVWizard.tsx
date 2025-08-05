@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import { useCVStore } from '../../../store/cvStore';
+import { usePersistence } from '../../../hooks/usePersistence';
 import { PersonalInfoForm } from './PersonalInfoForm';
 import { ProfessionalSummaryForm } from './ProfessionalSummaryForm';
 import { SkillsForm } from './SkillsForm';
@@ -7,7 +8,7 @@ import { ExperienceForm } from './ExperienceForm';
 import { EducationForm } from './EducationForm';
 import { Button } from '../../ui/Button';
 import { Card } from '../../ui/Card';
-import { ChevronLeft, ChevronRight, Download } from 'lucide-react';
+import { ChevronLeft, ChevronRight, Download, Trash2 } from 'lucide-react';
 import styles from './CVWizard.module.css';
 import { downloadPDF } from '../../../services/pdfService';
 
@@ -20,8 +21,11 @@ const STEPS = [
 ];
 
 export const CVWizard = () => {
-  const { currentStep, nextStep, prevStep, cvData } = useCVStore();
+  const { currentStep, nextStep, prevStep, cvData, clearStoredData } = useCVStore();
   const [isFormValid, setIsFormValid] = useState(false);
+
+  // Check if there are stored data to clear
+  const { hasStoredData } = usePersistence(() => { });
 
   const CurrentStepComponent = STEPS[currentStep].component;
   const isFirstStep = currentStep === 0;
@@ -104,6 +108,12 @@ export const CVWizard = () => {
     }
   };
 
+  const handleClearData = () => {
+    if (confirm('¿Estás seguro de que quieres eliminar todos los datos guardados? Esta acción no se puede deshacer.')) {
+      clearStoredData();
+    }
+  };
+
   return (
     <div className={styles.wizard}>
       {/* Progress Bar */}
@@ -168,6 +178,20 @@ export const CVWizard = () => {
           )}
         </div>
       </div>
+
+      {/* Clear Data Button - Only show when there are stored data */}
+      {hasStoredData && (
+        <div className={styles.clearDataSection}>
+          <Button
+            variant="outline"
+            onClick={handleClearData}
+            className={styles.clearDataButton}
+          >
+            <Trash2 size={16} />
+            Limpiar Datos
+          </Button>
+        </div>
+      )}
     </div>
   );
 };
