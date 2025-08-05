@@ -27,7 +27,7 @@ function App() {
     }
   };
 
-  const { isInitialized, hasStoredData, isDataRestored } = usePersistence(showToastWrapper);
+  const { isInitialized, hasStoredData } = usePersistence(showToastWrapper);
 
   // Función para limpiar datos
   const handleClearData = () => {
