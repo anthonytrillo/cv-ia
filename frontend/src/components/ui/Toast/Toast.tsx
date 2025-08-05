@@ -11,12 +11,31 @@ interface ToastProps {
 
 export const Toast = ({ message, type, duration = 3000, onClose }: ToastProps) => {
   const [isVisible, setIsVisible] = useState(true);
+  const [progress, setProgress] = useState(100);
 
   useEffect(() => {
+    const startTime = Date.now();
+    const endTime = startTime + duration;
+
+    const updateProgress = () => {
+      const now = Date.now();
+      const remaining = Math.max(0, endTime - now);
+      const progressPercent = (remaining / duration) * 100;
+
+      setProgress(progressPercent);
+
+      if (remaining > 0) {
+        requestAnimationFrame(updateProgress);
+      }
+    };
+
     const timer = setTimeout(() => {
       setIsVisible(false);
       setTimeout(onClose, 300);
     }, duration);
+
+    // Iniciar la animación de progreso
+    requestAnimationFrame(updateProgress);
 
     return () => {
       clearTimeout(timer);
@@ -52,6 +71,12 @@ export const Toast = ({ message, type, duration = 3000, onClose }: ToastProps) =
       <button onClick={handleClose} className={styles.closeButton}>
         <X size={14} />
       </button>
+      <div className={styles.progressBar}>
+        <div
+          className={styles.progressFill}
+          style={{ width: `${progress}%` }}
+        />
+      </div>
     </div>
   );
 }; 

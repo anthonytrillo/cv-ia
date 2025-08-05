@@ -14,6 +14,7 @@
   justify-content: space-between;
   gap: var(--spacing-sm);
   border-left: 4px solid;
+  overflow: hidden;
 }
 
 .toast.success {
@@ -54,6 +55,35 @@
 
 .closeButton:hover {
   color: var(--color-gray-600);
+}
+
+/* Progress Bar */
+.progressBar {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 3px;
+  background-color: var(--color-gray-200);
+  overflow: hidden;
+}
+
+.progressFill {
+  height: 100%;
+  background-color: var(--color-primary);
+  transition: width 0.1s linear;
+}
+
+.toast.success .progressFill {
+  background-color: var(--color-success);
+}
+
+.toast.error .progressFill {
+  background-color: var(--color-error);
+}
+
+.toast.info .progressFill {
+  background-color: var(--color-primary);
 }
 
 /* Responsive */
