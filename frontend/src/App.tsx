@@ -1,7 +1,6 @@
 import { useState } from 'react';
 import { CVWizard } from './components/forms/CVWizard';
 import { CVPreview } from './components/cv/CVPreview';
-import { useCVStore } from './store/cvStore';
 import { usePersistence } from './hooks/usePersistence';
 import { useToast } from './hooks/useToast';
 import { Toast } from './components/ui';
@@ -11,7 +10,6 @@ import styles from './App.module.css';
 
 function AppContent() {
   const [viewMode, setViewMode] = useState<'form' | 'preview'>('form');
-  const { cvData } = useCVStore();
   const { showSuccess, showError, toasts, removeToast } = useToast();
 
   const showToastWrapper = (message: string, type?: 'success' | 'error' | 'info') => {
