@@ -57,7 +57,7 @@ function App() {
       </main>
 
       <footer className={styles.footer}>
-        <p>&copy; 2024 Creador de CV Gratuito. Todos los derechos reservados.</p>
+        <p>&copy; {new Date().getFullYear()} Anthony Trillo. Todos los derechos reservados.</p>
       </footer>
     </div>
   );
