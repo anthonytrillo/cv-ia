@@ -40,11 +40,17 @@ export const PersonalInfoForm = () => {
     register,
     handleSubmit,
     watch,
+    reset,
     formState: { errors },
   } = useForm<PersonalInfoFormData>({
     resolver: zodResolver(personalInfoSchema),
     defaultValues: cvData.personalInfo,
   });
+
+  // Reset form when cvData.personalInfo changes (e.g., when data is cleared)
+  React.useEffect(() => {
+    reset(cvData.personalInfo);
+  }, [cvData.personalInfo, reset]);
 
   // Watch form values and update store automatically
   const watchedValues = watch();

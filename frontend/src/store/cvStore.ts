@@ -1,5 +1,6 @@
 import { create } from 'zustand';
 import type { CVFormData, PersonalInfo, ProfessionalSummary, Skill, Experience, Education } from '../types/cv';
+import { persistenceService } from '../services/persistenceService';
 
 interface CVStore {
   // Estado
@@ -7,6 +8,7 @@ interface CVStore {
   currentStep: number;
   isLoading: boolean;
   error: string | null;
+  isDataRestored: boolean;
 
   // Acciones
   setPersonalInfo: (data: PersonalInfo) => void;
@@ -29,6 +31,11 @@ interface CVStore {
   setLoading: (loading: boolean) => void;
   setError: (error: string | null) => void;
   resetCV: () => void;
+  loadStoredData: () => void;
+  saveCurrentData: () => void;
+  clearStoredData: () => void;
+  exportCVData: () => string;
+  importCVData: (jsonData: string) => boolean;
 }
 
 const generateId = (): string => {
@@ -51,173 +58,312 @@ const initialCVData: CVFormData = {
   education: [],
 };
 
-export const useCVStore = create<CVStore>((set) => ({
+export const useCVStore = create<CVStore>((set, get) => ({
   // Estado inicial
   cvData: initialCVData,
   currentStep: 0,
   isLoading: false,
   error: null,
+  isDataRestored: false,
 
   // Acciones
   setPersonalInfo: (data) =>
-    set((state) => ({
-      cvData: {
-        ...state.cvData,
-        personalInfo: data,
-      },
-    })),
+    set((state) => {
+      const newState = {
+        cvData: {
+          ...state.cvData,
+          personalInfo: data,
+        },
+      };
+      // Guardar automáticamente
+      persistenceService.saveData(newState.cvData, state.currentStep);
+      return newState;
+    }),
 
   setProfessionalSummary: (data) =>
-    set((state) => ({
-      cvData: {
-        ...state.cvData,
-        professionalSummary: data,
-      },
-    })),
+    set((state) => {
+      const newState = {
+        cvData: {
+          ...state.cvData,
+          professionalSummary: data,
+        },
+      };
+      // Guardar automáticamente
+      persistenceService.saveData(newState.cvData, state.currentStep);
+      return newState;
+    }),
 
   setSkills: (skills) =>
-    set((state) => ({
-      cvData: {
-        ...state.cvData,
-        skills,
-      },
-    })),
+    set((state) => {
+      const newState = {
+        cvData: {
+          ...state.cvData,
+          skills,
+        },
+      };
+      // Guardar automáticamente
+      persistenceService.saveData(newState.cvData, state.currentStep);
+      return newState;
+    }),
 
   addSkill: (skill) =>
-    set((state) => ({
-      cvData: {
-        ...state.cvData,
-        skills: [
-          ...state.cvData.skills,
-          {
-            ...skill,
-            id: generateId(),
-            orderIndex: state.cvData.skills.length,
-          },
-        ],
-      },
-    })),
+    set((state) => {
+      const newState = {
+        cvData: {
+          ...state.cvData,
+          skills: [
+            ...state.cvData.skills,
+            {
+              ...skill,
+              id: generateId(),
+              orderIndex: state.cvData.skills.length,
+            },
+          ],
+        },
+      };
+      // Guardar automáticamente
+      persistenceService.saveData(newState.cvData, state.currentStep);
+      return newState;
+    }),
 
   removeSkill: (id) =>
-    set((state) => ({
-      cvData: {
-        ...state.cvData,
-        skills: state.cvData.skills.filter((skill) => skill.id !== id),
-      },
-    })),
+    set((state) => {
+      const newState = {
+        cvData: {
+          ...state.cvData,
+          skills: state.cvData.skills.filter((skill) => skill.id !== id),
+        },
+      };
+      // Guardar automáticamente
+      persistenceService.saveData(newState.cvData, state.currentStep);
+      return newState;
+    }),
 
   updateSkill: (id, skill) =>
-    set((state) => ({
-      cvData: {
-        ...state.cvData,
-        skills: state.cvData.skills.map((s) =>
-          s.id === id ? { ...s, ...skill } : s
-        ),
-      },
-    })),
+    set((state) => {
+      const newState = {
+        cvData: {
+          ...state.cvData,
+          skills: state.cvData.skills.map((s) =>
+            s.id === id ? { ...s, ...skill } : s
+          ),
+        },
+      };
+      // Guardar automáticamente
+      persistenceService.saveData(newState.cvData, state.currentStep);
+      return newState;
+    }),
 
   setExperiences: (experiences) =>
-    set((state) => ({
-      cvData: {
-        ...state.cvData,
-        experiences,
-      },
-    })),
+    set((state) => {
+      const newState = {
+        cvData: {
+          ...state.cvData,
+          experiences,
+        },
+      };
+      // Guardar automáticamente
+      persistenceService.saveData(newState.cvData, state.currentStep);
+      return newState;
+    }),
 
   addExperience: (experience) =>
-    set((state) => ({
-      cvData: {
-        ...state.cvData,
-        experiences: [
-          ...state.cvData.experiences,
-          {
-            ...experience,
-            id: generateId(),
-            orderIndex: state.cvData.experiences.length,
-          },
-        ],
-      },
-    })),
+    set((state) => {
+      const newState = {
+        cvData: {
+          ...state.cvData,
+          experiences: [
+            ...state.cvData.experiences,
+            {
+              ...experience,
+              id: generateId(),
+              orderIndex: state.cvData.experiences.length,
+            },
+          ],
+        },
+      };
+      // Guardar automáticamente
+      persistenceService.saveData(newState.cvData, state.currentStep);
+      return newState;
+    }),
 
   removeExperience: (id) =>
-    set((state) => ({
-      cvData: {
-        ...state.cvData,
-        experiences: state.cvData.experiences.filter((exp) => exp.id !== id),
-      },
-    })),
+    set((state) => {
+      const newState = {
+        cvData: {
+          ...state.cvData,
+          experiences: state.cvData.experiences.filter((exp) => exp.id !== id),
+        },
+      };
+      // Guardar automáticamente
+      persistenceService.saveData(newState.cvData, state.currentStep);
+      return newState;
+    }),
 
   updateExperience: (id, experience) =>
-    set((state) => ({
-      cvData: {
-        ...state.cvData,
-        experiences: state.cvData.experiences.map((exp) =>
-          exp.id === id ? { ...exp, ...experience } : exp
-        ),
-      },
-    })),
+    set((state) => {
+      const newState = {
+        cvData: {
+          ...state.cvData,
+          experiences: state.cvData.experiences.map((exp) =>
+            exp.id === id ? { ...exp, ...experience } : exp
+          ),
+        },
+      };
+      // Guardar automáticamente
+      persistenceService.saveData(newState.cvData, state.currentStep);
+      return newState;
+    }),
 
   setEducation: (education) =>
-    set((state) => ({
-      cvData: {
-        ...state.cvData,
-        education,
-      },
-    })),
+    set((state) => {
+      const newState = {
+        cvData: {
+          ...state.cvData,
+          education,
+        },
+      };
+      // Guardar automáticamente
+      persistenceService.saveData(newState.cvData, state.currentStep);
+      return newState;
+    }),
 
   addEducation: (education) =>
-    set((state) => ({
-      cvData: {
-        ...state.cvData,
-        education: [
-          ...state.cvData.education,
-          {
-            ...education,
-            id: generateId(),
-            orderIndex: state.cvData.education.length,
-          },
-        ],
-      },
-    })),
+    set((state) => {
+      const newState = {
+        cvData: {
+          ...state.cvData,
+          education: [
+            ...state.cvData.education,
+            {
+              ...education,
+              id: generateId(),
+              orderIndex: state.cvData.education.length,
+            },
+          ],
+        },
+      };
+      // Guardar automáticamente
+      persistenceService.saveData(newState.cvData, state.currentStep);
+      return newState;
+    }),
 
   removeEducation: (id) =>
-    set((state) => ({
-      cvData: {
-        ...state.cvData,
-        education: state.cvData.education.filter((edu) => edu.id !== id),
-      },
-    })),
+    set((state) => {
+      const newState = {
+        cvData: {
+          ...state.cvData,
+          education: state.cvData.education.filter((edu) => edu.id !== id),
+        },
+      };
+      // Guardar automáticamente
+      persistenceService.saveData(newState.cvData, state.currentStep);
+      return newState;
+    }),
 
   updateEducation: (id, education) =>
-    set((state) => ({
-      cvData: {
-        ...state.cvData,
-        education: state.cvData.education.map((edu) =>
-          edu.id === id ? { ...edu, ...education } : edu
-        ),
-      },
-    })),
+    set((state) => {
+      const newState = {
+        cvData: {
+          ...state.cvData,
+          education: state.cvData.education.map((edu) =>
+            edu.id === id ? { ...edu, ...education } : edu
+          ),
+        },
+      };
+      // Guardar automáticamente
+      persistenceService.saveData(newState.cvData, state.currentStep);
+      return newState;
+    }),
 
-  setCurrentStep: (step) => set({ currentStep: step }),
+  setCurrentStep: (step) => {
+    set({ currentStep: step });
+    // Guardar el paso actual
+    const state = get();
+    persistenceService.saveData(state.cvData, step);
+  },
 
-  nextStep: () =>
-    set((state) => ({
-      currentStep: Math.min(state.currentStep + 1, 4), // 5 pasos totales
-    })),
+  nextStep: () => {
+    set((state) => {
+      const newStep = Math.min(state.currentStep + 1, 4);
+      // Guardar el paso actual
+      persistenceService.saveData(state.cvData, newStep);
+      return { currentStep: newStep };
+    });
+  },
 
-  prevStep: () =>
-    set((state) => ({
-      currentStep: Math.max(state.currentStep - 1, 0),
-    })),
+  prevStep: () => {
+    set((state) => {
+      const newStep = Math.max(state.currentStep - 1, 0);
+      // Guardar el paso actual
+      persistenceService.saveData(state.cvData, newStep);
+      return { currentStep: newStep };
+    });
+  },
 
   setLoading: (loading) => set({ isLoading: loading }),
 
   setError: (error) => set({ error }),
 
-  resetCV: () =>
+  resetCV: () => {
     set({
       cvData: initialCVData,
       currentStep: 0,
       error: null,
-    }),
+    });
+    // Limpiar datos guardados
+    persistenceService.clearData();
+  },
+
+  // Cargar datos guardados
+  loadStoredData: () => {
+    const storedData = persistenceService.loadData();
+    if (storedData) {
+      set({
+        cvData: storedData.cvData,
+        currentStep: storedData.currentStep,
+        isDataRestored: true,
+      });
+    }
+  },
+
+  // Guardar datos actuales inmediatamente
+  saveCurrentData: () => {
+    const state = get();
+    persistenceService.saveDataImmediate(state.cvData, state.currentStep);
+  },
+
+  // Limpiar datos guardados
+  clearStoredData: () => {
+    persistenceService.clearData();
+    // También resetear el estado del store
+    set({
+      cvData: initialCVData,
+      currentStep: 0,
+      error: null,
+      isDataRestored: false,
+    });
+  },
+
+  // Exportar datos del CV
+  exportCVData: () => {
+    const state = get();
+    return persistenceService.exportData(state.cvData);
+  },
+
+  // Importar datos del CV
+  importCVData: (jsonData: string) => {
+    const importedData = persistenceService.importData(jsonData);
+    if (importedData) {
+      set({
+        cvData: importedData,
+        currentStep: 0,
+        isDataRestored: true,
+      });
+      // Guardar los datos importados
+      persistenceService.saveDataImmediate(importedData, 0);
+      return true;
+    }
+    return false;
+  },
 })); 

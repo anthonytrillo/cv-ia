@@ -27,11 +27,17 @@ export const ProfessionalSummaryForm = () => {
     register,
     handleSubmit,
     watch,
+    reset,
     formState: { errors },
   } = useForm<ProfessionalSummaryFormData>({
     resolver: zodResolver(professionalSummarySchema),
     defaultValues: cvData.professionalSummary,
   });
+
+  // Reset form when cvData.professionalSummary changes (e.g., when data is cleared)
+  React.useEffect(() => {
+    reset(cvData.professionalSummary);
+  }, [cvData.professionalSummary, reset]);
 
   // Watch form values and update store automatically
   const watchedValues = watch();
