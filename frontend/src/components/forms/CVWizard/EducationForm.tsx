@@ -4,11 +4,15 @@ import { Input } from '../../ui/Input';
 import { Textarea } from '../../ui/Textarea';
 import { Button } from '../../ui/Button';
 import { Plus, X, Trash2 } from 'lucide-react';
+import { formatMonthYear } from '../../../utils/dateFormat';
 import styles from './EducationForm.module.css';
+
+type FormErrors = { degree?: string; institution?: string; completionDate?: string; description?: string };
 
 export const EducationForm = () => {
   const { cvData, addEducation, removeEducation } = useCVStore();
   const [showAddForm, setShowAddForm] = useState(false);
+  const [errors, setErrors] = useState<FormErrors>({});
   const [newEducation, setNewEducation] = useState({
     degree: '',
     institution: '',
@@ -18,88 +22,52 @@ export const EducationForm = () => {
     highlights: [''],
   });
 
-  const handleAddEducation = () => {
+  const validate = (): boolean => {
     const { degree, institution, completionDate, isExpected, description, highlights } = newEducation;
+    const next: FormErrors = {};
 
-    // Validaciones básicas
-    if (!degree.trim()) {
-      alert('El título/certificación es requerido');
-      return;
-    }
+    if (!degree.trim()) next.degree = 'El título es requerido';
+    else if (degree.trim().length < 3) next.degree = 'Mínimo 3 caracteres';
+    else if (degree.trim().length > 150) next.degree = 'Máximo 150 caracteres';
 
-    if (!institution.trim()) {
-      alert('La institución es requerida');
-      return;
-    }
+    if (!institution.trim()) next.institution = 'La institución es requerida';
+    else if (institution.trim().length < 3) next.institution = 'Mínimo 3 caracteres';
+    else if (institution.trim().length > 150) next.institution = 'Máximo 150 caracteres';
 
-    // Validar longitud de campos
-    if (degree.trim().length < 3) {
-      alert('El título debe tener al menos 3 caracteres');
-      return;
-    }
-
-    if (institution.trim().length < 3) {
-      alert('La institución debe tener al menos 3 caracteres');
-      return;
-    }
-
-    if (degree.trim().length > 150) {
-      alert('El título no puede exceder 150 caracteres');
-      return;
-    }
-
-    if (institution.trim().length > 150) {
-      alert('La institución no puede exceder 150 caracteres');
-      return;
-    }
-
-    // Validar fecha si no es esperado
-    if (!isExpected && !completionDate) {
-      alert('La fecha de finalización es requerida si no está en curso');
-      return;
-    }
-
+    if (!isExpected && !completionDate) next.completionDate = 'Indica la fecha o marca "En curso"';
     if (!isExpected && completionDate) {
-      const completionDateObj = new Date(completionDate);
-      const currentDate = new Date();
-
-      if (completionDateObj > currentDate) {
-        alert('La fecha de finalización no puede ser en el futuro');
-        return;
-      }
+      const d = new Date(completionDate);
+      if (d > new Date()) next.completionDate = 'La fecha no puede ser futura';
     }
 
-    // Validar descripción si se proporciona
-    if (description && description.trim().length < 10) {
-      alert('La descripción debe tener al menos 10 caracteres');
-      return;
+    if (description?.trim()) {
+      if (description.trim().length < 10) next.description = 'Mínimo 10 caracteres';
+      else if (description.trim().length > 300) next.description = 'Máximo 300 caracteres';
     }
 
-    if (description && description.trim().length > 300) {
-      alert('La descripción no puede exceder 300 caracteres');
-      return;
-    }
-
-    // Validar highlights si se proporcionan
     const validHighlights = highlights.filter(h => h.trim().length > 0);
-    if (validHighlights.length > 0) {
-      for (const highlight of validHighlights) {
-        if (highlight.trim().length < 5) {
-          alert('Cada punto destacado debe tener al menos 5 caracteres');
-          return;
-        }
-        if (highlight.trim().length > 150) {
-          alert('Cada punto destacado no puede exceder 150 caracteres');
-          return;
-        }
+    for (const h of validHighlights) {
+      if (h.trim().length < 5 || h.trim().length > 150) {
+        next.description = next.description || 'Cada punto destacado: entre 5 y 150 caracteres';
+        break;
       }
     }
+
+    setErrors(next);
+    return Object.keys(next).length === 0;
+  };
+
+  const handleAddEducation = () => {
+    if (!validate()) return;
+
+    const { degree, institution, completionDate, isExpected, description, highlights } = newEducation;
+    const validHighlights = highlights.filter(h => h.trim().length >= 5 && h.trim().length <= 150);
 
     addEducation({
       degree: degree.trim(),
       institution: institution.trim(),
       completionDate: isExpected ? undefined : completionDate,
-      isExpected: isExpected,
+      isExpected,
       description: description.trim(),
       highlights: validHighlights,
       orderIndex: cvData.education.length,
@@ -113,6 +81,7 @@ export const EducationForm = () => {
       description: '',
       highlights: [''],
     });
+    setErrors({});
     setShowAddForm(false);
   };
 
@@ -156,7 +125,7 @@ export const EducationForm = () => {
                   <h4 className={styles.degree}>{education.degree}</h4>
                   <p className={styles.institution}>{education.institution}</p>
                   <p className={styles.dates}>
-                    {education.isExpected ? 'Esperado' : education.completionDate}
+                    {education.isExpected ? 'En curso' : formatMonthYear(education.completionDate) || education.completionDate}
                   </p>
                 </div>
                 <Button
@@ -165,8 +134,9 @@ export const EducationForm = () => {
                   size="sm"
                   onClick={() => handleRemoveEducation(education.id)}
                   className={styles.removeButton}
+                  aria-label={`Eliminar educación ${education.degree}`}
                 >
-                  <Trash2 size={14} />
+                  <Trash2 size={14} aria-hidden />
                 </Button>
               </div>
             </div>
@@ -181,8 +151,9 @@ export const EducationForm = () => {
           variant="outline"
           onClick={() => setShowAddForm(true)}
           className={styles.addButton}
+          aria-label="Agregar nueva educación"
         >
-          <Plus size={16} />
+          <Plus size={16} aria-hidden />
           Agregar Educación
         </Button>
       ) : (
@@ -192,25 +163,28 @@ export const EducationForm = () => {
           <div className={styles.formGrid}>
             <Input
               label="Título/Certificación *"
-              placeholder="Ej: Técnico Superior en Administración y Gestión"
+              placeholder="Ej: Técnico Superior en Administración"
               value={newEducation.degree}
-              onChange={(e) => setNewEducation(prev => ({ ...prev, degree: e.target.value }))}
+              onChange={(e) => { setNewEducation(prev => ({ ...prev, degree: e.target.value })); setErrors(prev => ({ ...prev, degree: undefined })); }}
+              error={errors.degree}
             />
 
             <Input
               label="Institución *"
               placeholder="Ej: IES Comercial de Madrid"
               value={newEducation.institution}
-              onChange={(e) => setNewEducation(prev => ({ ...prev, institution: e.target.value }))}
+              onChange={(e) => { setNewEducation(prev => ({ ...prev, institution: e.target.value })); setErrors(prev => ({ ...prev, institution: undefined })); }}
+              error={errors.institution}
             />
 
             <div className={styles.dateSection}>
               <Input
-                label="Fecha de Finalización"
+                label="Fecha de finalización"
                 type="month"
                 value={newEducation.completionDate}
-                onChange={(e) => setNewEducation(prev => ({ ...prev, completionDate: e.target.value }))}
+                onChange={(e) => { setNewEducation(prev => ({ ...prev, completionDate: e.target.value })); setErrors(prev => ({ ...prev, completionDate: undefined })); }}
                 disabled={newEducation.isExpected}
+                error={errors.completionDate}
               />
 
               <label className={styles.checkboxLabel}>
@@ -225,11 +199,12 @@ export const EducationForm = () => {
           </div>
 
           <Textarea
-            label="Descripción"
-            placeholder="Describe tu formación y especialización en atención al cliente o gestión empresarial"
+            label="Descripción (opcional)"
+            placeholder="Breve descripción de la formación"
             value={newEducation.description}
-            onChange={(e) => setNewEducation(prev => ({ ...prev, description: e.target.value }))}
+            onChange={(e) => { setNewEducation(prev => ({ ...prev, description: e.target.value })); setErrors(prev => ({ ...prev, description: undefined })); }}
             rows={3}
+            error={errors.description}
           />
 
           <div className={styles.highlightsSection}>
@@ -248,8 +223,9 @@ export const EducationForm = () => {
                     size="sm"
                     onClick={() => handleRemoveHighlight(index)}
                     className={styles.removeHighlightButton}
+                    aria-label="Eliminar punto destacado"
                   >
-                    <X size={14} />
+                    <X size={14} aria-hidden />
                   </Button>
                 )}
               </div>
@@ -260,8 +236,9 @@ export const EducationForm = () => {
               size="sm"
               onClick={handleAddHighlight}
               className={styles.addHighlightButton}
+              aria-label="Agregar punto destacado"
             >
-              <Plus size={14} />
+              <Plus size={14} aria-hidden />
               Agregar Punto
             </Button>
           </div>

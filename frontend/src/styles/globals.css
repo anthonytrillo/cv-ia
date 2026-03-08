@@ -134,7 +134,7 @@ li {
   margin-bottom: var(--spacing-xs);
 }
 
-/* Formularios */
+/* Formularios: legibilidad y touch en móvil */
 input,
 textarea,
 select {
@@ -143,11 +143,21 @@ select {
   line-height: inherit;
 }
 
+/* Evitar zoom en iOS en inputs (16px mínimo en móvil) */
+@media (max-width: 767px) {
+  input,
+  select,
+  textarea {
+    font-size: 16px;
+  }
+}
+
 button {
   font-family: inherit;
   font-size: inherit;
   line-height: inherit;
   cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
 }
 
 /* Utilidades */

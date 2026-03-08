@@ -4,18 +4,12 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
 import { useCVStore } from '../../../store/cvStore';
 import { Textarea } from '../../ui/Textarea';
+import styles from './ProfessionalSummaryForm.module.css';
 
 const professionalSummarySchema = z.object({
   summary: z.string()
-    .min(1, 'El resumen profesional es requerido')
-    .min(50, 'El resumen debe tener al menos 50 caracteres')
     .max(500, 'El resumen no puede exceder 500 caracteres')
-    .refine((val) => {
-      const sentences = val.split(/[.!?]+/).filter(s => s.trim().length > 0);
-      return sentences.length >= 2;
-    }, {
-      message: 'El resumen debe contener al menos 2 oraciones completas'
-    }),
+    .transform((val) => (val ?? '').trim()),
 });
 
 type ProfessionalSummaryFormData = z.infer<typeof professionalSummarySchema>;
@@ -42,41 +36,31 @@ export const ProfessionalSummaryForm = () => {
   // Watch form values and update store automatically
   const watchedValues = watch();
   React.useEffect(() => {
-    // Only update if we have meaningful data and it's different from current store data
-    const hasValidData = watchedValues.summary && watchedValues.summary.trim().length >= 50;
-    const isDifferentFromStore = watchedValues.summary !== cvData.professionalSummary.summary;
-
-    if (hasValidData && isDifferentFromStore) {
-      setProfessionalSummary(watchedValues);
+    const summary = watchedValues.summary ?? '';
+    const isDifferentFromStore = summary !== cvData.professionalSummary.summary;
+    if (isDifferentFromStore) {
+      setProfessionalSummary({ summary });
     }
   }, [watchedValues, setProfessionalSummary, cvData.professionalSummary]);
 
   const onSubmit = (data: ProfessionalSummaryFormData) => {
-    setProfessionalSummary(data);
-    // Prevent form from actually submitting
-    return false;
+    setProfessionalSummary({ summary: data.summary });
   };
 
   return (
-    <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
-      <div>
-        <Textarea
-          label="Resumen Profesional *"
-          placeholder="Describe tu experiencia en atención al cliente, tu enfoque para resolver problemas, y cómo has contribuido a mejorar la satisfacción del cliente. Incluye ejemplos de logros específicos y tu filosofía de servicio al cliente."
-          error={errors.summary?.message}
-          helperText="Mínimo 50 caracteres. Describe tu experiencia en atención al cliente, logros y enfoque de servicio."
-          rows={6}
-          {...register('summary')}
-        />
-      </div>
+    <form onSubmit={handleSubmit(onSubmit)} className={styles.form} data-testid="professional-summary-form">
+      <Textarea
+        label="Resumen Profesional"
+        placeholder="Ej: Más de 5 años en atención al cliente. Enfocado en resolver consultas y mejorar la satisfacción."
+        error={errors.summary?.message}
+        helperText="Opcional. Máx. 500 caracteres."
+        rows={5}
+        {...register('summary')}
+      />
 
-      <div className="text-sm text-gray-600">
-        <p>* Campo obligatorio</p>
-        <p className="mt-2">
-          <strong>Consejo:</strong> Escribe un resumen que capture la atención del reclutador
-          en los primeros segundos. Incluye tu experiencia más relevante, logros cuantificables
-          y lo que te hace destacar en tu campo profesional.
-        </p>
+      <p className={styles.optionalNote}>Puedes omitir este paso y completarlo más tarde.</p>
+      <div className={styles.tip}>
+        <strong>Consejo:</strong> Un resumen corto con experiencia y logros ayuda a destacar.
       </div>
     </form>
   );

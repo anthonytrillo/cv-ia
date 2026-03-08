@@ -1,0 +1,52 @@
+/* ========== BASE: MOBILE FIRST ========== */
+
+.overlay {
+  position: fixed;
+  inset: 0;
+  inset: env(safe-area-inset-top) env(safe-area-inset-right) env(safe-area-inset-bottom) env(safe-area-inset-left);
+  background-color: var(--bg-overlay);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: var(--spacing-md);
+  z-index: 1000;
+  animation: fadeIn 0.2s ease-out;
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+}
+
+.modal {
+  background-color: var(--bg-card);
+  border-radius: var(--border-radius-lg);
+  box-shadow: var(--shadow-xl);
+  max-width: min(420px, calc(100vw - var(--spacing-lg) * 2));
+  width: 100%;
+  max-height: min(90vh, 90dvh);
+  overflow: auto;
+  margin: auto;
+}
+
+.title {
+  font-size: var(--font-size-lg);
+  font-weight: 600;
+  margin: 0;
+  padding: var(--spacing-lg) var(--spacing-lg) 0;
+  color: var(--text-primary);
+}
+
+.content {
+  padding: var(--spacing-lg);
+}
+
+.content button {
+  min-height: var(--touch-target-min);
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}

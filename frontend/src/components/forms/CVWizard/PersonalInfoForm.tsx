@@ -4,6 +4,7 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
 import { useCVStore } from '../../../store/cvStore';
 import { Input } from '../../ui/Input';
+import styles from './PersonalInfoForm.module.css';
 
 const personalInfoSchema = z.object({
   fullName: z.string()
@@ -82,8 +83,8 @@ export const PersonalInfoForm = () => {
   };
 
   return (
-    <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+    <form onSubmit={handleSubmit(onSubmit)} className={styles.form} data-testid="personal-info-form">
+      <div className={styles.grid}>
         <Input
           label="Nombre Completo *"
           placeholder="Ej: María Rodríguez Sánchez"
@@ -112,22 +113,20 @@ export const PersonalInfoForm = () => {
           type="url"
           placeholder="https://linkedin.com/in/tu-perfil"
           error={errors.linkedin?.message}
-          helperText="Opcional - Útil para mostrar tu experiencia profesional"
+          helperText="Opcional"
           {...register('linkedin')}
         />
       </div>
 
       <Input
         label="Título Profesional *"
-        placeholder="Ej: Especialista en Atención al Cliente, Agente de Soporte, etc."
+        placeholder="Ej: Especialista en Atención al Cliente"
         error={errors.professionalTitle?.message}
-        helperText="Describe tu rol actual o el puesto que buscas"
+        helperText="Rol actual o puesto que buscas"
         {...register('professionalTitle')}
       />
 
-      <div className="text-sm text-gray-600">
-        <p>* Campos obligatorios</p>
-      </div>
+      <p className={styles.requiredNote}>* Campos obligatorios</p>
     </form>
   );
 }; 

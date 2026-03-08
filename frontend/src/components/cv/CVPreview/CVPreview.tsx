@@ -1,13 +1,16 @@
 import { useState } from 'react';
 import { useCVStore } from '../../../store/cvStore';
+import { useToastContext } from '../../../contexts/ToastContext';
 import { Button } from '../../ui/Button';
 import { Download, FileText } from 'lucide-react';
 import { downloadPDF } from '../../../services/pdfService';
 import { sampleCVData } from '../../../utils/sampleData';
+import { formatMonthYear } from '../../../utils/dateFormat';
 import styles from './CVPreview.module.css';
 
 export const CVPreview = () => {
   const { cvData, setPersonalInfo, setProfessionalSummary, setSkills, setExperiences, setEducation } = useCVStore();
+  const { showSuccess, showError } = useToastContext();
   const { personalInfo, professionalSummary, skills, experiences, education } = cvData;
   const [isDownloading, setIsDownloading] = useState(false);
 
@@ -16,9 +19,10 @@ export const CVPreview = () => {
       setIsDownloading(true);
       const filename = `${personalInfo.fullName || 'CV'}.pdf`;
       await downloadPDF(cvData, filename);
+      showSuccess('CV descargado correctamente');
     } catch (error) {
       console.error('Error downloading PDF:', error);
-      alert('Error al descargar el PDF. Por favor, inténtalo de nuevo.');
+      showError('Error al descargar el PDF. Inténtalo de nuevo.');
     } finally {
       setIsDownloading(false);
     }
@@ -37,21 +41,23 @@ export const CVPreview = () => {
       <div className={styles.downloadSection}>
         <div className={styles.buttonGroup}>
           <Button
-            onClick={handleLoadSampleData}
-            variant="sampleData"
-            size="md"
-          >
-            <FileText size={16} />
-            Cargar Datos de Ejemplo
-          </Button>
-          <Button
             onClick={handleDownloadPDF}
             loading={isDownloading}
             variant="download"
-            size="md"
+            size="lg"
+            aria-label="Descargar CV en PDF"
           >
-            <Download size={16} />
+            <Download size={20} aria-hidden />
             Descargar PDF
+          </Button>
+          <Button
+            onClick={handleLoadSampleData}
+            variant="outline"
+            size="md"
+            aria-label="Cargar datos de ejemplo"
+          >
+            <FileText size={16} aria-hidden />
+            Datos de ejemplo
           </Button>
         </div>
       </div>
@@ -98,7 +104,7 @@ export const CVPreview = () => {
                   <div className={styles.experienceHeader}>
                     <h3 className={styles.jobTitle}>{experience.jobTitle}</h3>
                     <span className={styles.date}>
-                      {experience.startDate} - {experience.isCurrent ? 'Presente' : experience.endDate}
+                      {formatMonthYear(experience.startDate) || experience.startDate} – {experience.isCurrent ? 'Presente' : (formatMonthYear(experience.endDate) || experience.endDate)}
                     </span>
                   </div>
                   <div className={styles.company}>{experience.company}</div>
@@ -128,7 +134,7 @@ export const CVPreview = () => {
                   <div className={styles.educationHeader}>
                     <h3 className={styles.degree}>{edu.degree}</h3>
                     <span className={styles.date}>
-                      {edu.isExpected ? 'Esperado' : edu.completionDate}
+                      {edu.isExpected ? 'En curso' : (formatMonthYear(edu.completionDate) || edu.completionDate)}
                     </span>
                   </div>
                   <div className={styles.institution}>{edu.institution}</div>

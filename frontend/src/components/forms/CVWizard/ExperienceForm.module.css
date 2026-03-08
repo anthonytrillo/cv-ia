@@ -12,7 +12,15 @@
 }
 
 .addButton {
-  align-self: flex-start;
+  align-self: stretch;
+  min-height: var(--touch-target-min);
+}
+
+@media (min-width: 480px) {
+  .addButton {
+    align-self: flex-start;
+    min-height: 40px;
+  }
 }
 
 /* Existing Experiences */
@@ -56,9 +64,16 @@
 
 .removeButton {
   flex-shrink: 0;
+  min-width: var(--touch-target-min);
+  min-height: var(--touch-target-min);
   padding: var(--spacing-xs);
-  min-width: auto;
-  height: 28px;
+}
+
+@media (min-width: 480px) {
+  .removeButton {
+    min-width: auto;
+    min-height: 40px;
+  }
 }
 
 /* Add Form */
@@ -66,15 +81,25 @@
   background-color: var(--color-gray-50);
   border: 1px solid var(--color-gray-200);
   border-radius: var(--border-radius-md);
-  padding: var(--spacing-lg);
+  padding: var(--spacing-md);
   margin-bottom: var(--spacing-lg);
 }
 
 .formGrid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  grid-template-columns: 1fr;
   gap: var(--spacing-md);
   margin-bottom: var(--spacing-md);
+}
+
+@media (min-width: 480px) {
+  .addForm {
+    padding: var(--spacing-lg);
+  }
+
+  .formGrid {
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  }
 }
 
 .dateSection {
@@ -86,14 +111,19 @@
 .checkboxLabel {
   display: flex;
   align-items: center;
-  gap: var(--spacing-xs);
-  font-size: var(--font-size-sm);
+  gap: var(--spacing-sm);
+  min-height: var(--touch-target-min);
+  font-size: var(--font-size-base);
   color: var(--color-gray-700);
   cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
 }
 
 .checkboxLabel input[type="checkbox"] {
   margin: 0;
+  width: 1.25rem;
+  height: 1.25rem;
+  flex-shrink: 0;
 }
 
 /* Achievements Section */
@@ -119,8 +149,8 @@
 .removeAchievementButton {
   flex-shrink: 0;
   padding: var(--spacing-xs);
-  min-width: auto;
-  height: 40px;
+  min-width: 40px;
+  min-height: 40px;
 }
 
 .addAchievementButton {
@@ -129,8 +159,24 @@
 
 .formActions {
   display: flex;
-  gap: var(--spacing-md);
+  flex-direction: column;
+  gap: var(--spacing-sm);
   margin-top: var(--spacing-lg);
+}
+
+.formActions button {
+  min-height: var(--touch-target-min);
+}
+
+@media (min-width: 480px) {
+  .formActions {
+    flex-direction: row;
+    gap: var(--spacing-md);
+  }
+
+  .formActions button {
+    min-height: 40px;
+  }
 }
 
 .helpText {
@@ -145,28 +191,4 @@
   font-size: var(--font-size-sm);
   color: var(--color-gray-600);
   margin: 0;
-}
-
-/* Responsive */
-@media (max-width: 640px) {
-  .formGrid {
-    grid-template-columns: 1fr;
-  }
-
-  .experienceHeader {
-    flex-direction: column;
-    align-items: flex-start;
-  }
-
-  .formActions {
-    flex-direction: column;
-  }
-
-  .achievementItem {
-    flex-direction: column;
-  }
-
-  .removeAchievementButton {
-    align-self: flex-end;
-  }
 }

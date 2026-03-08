@@ -9,6 +9,7 @@ interface CVStore {
   isLoading: boolean;
   error: string | null;
   isDataRestored: boolean;
+  lastSavedAt: number | null;
 
   // Acciones
   setPersonalInfo: (data: PersonalInfo) => void;
@@ -65,6 +66,7 @@ export const useCVStore = create<CVStore>((set, get) => ({
   isLoading: false,
   error: null,
   isDataRestored: false,
+  lastSavedAt: null,
 
   // Acciones
   setPersonalInfo: (data) =>
@@ -75,9 +77,8 @@ export const useCVStore = create<CVStore>((set, get) => ({
           personalInfo: data,
         },
       };
-      // Guardar automáticamente
       persistenceService.saveData(newState.cvData, state.currentStep);
-      return newState;
+      return { ...newState, lastSavedAt: Date.now() };
     }),
 
   setProfessionalSummary: (data) =>
@@ -88,9 +89,8 @@ export const useCVStore = create<CVStore>((set, get) => ({
           professionalSummary: data,
         },
       };
-      // Guardar automáticamente
       persistenceService.saveData(newState.cvData, state.currentStep);
-      return newState;
+      return { ...newState, lastSavedAt: Date.now() };
     }),
 
   setSkills: (skills) =>
@@ -101,9 +101,8 @@ export const useCVStore = create<CVStore>((set, get) => ({
           skills,
         },
       };
-      // Guardar automáticamente
       persistenceService.saveData(newState.cvData, state.currentStep);
-      return newState;
+      return { ...newState, lastSavedAt: Date.now() };
     }),
 
   addSkill: (skill) =>
@@ -121,9 +120,8 @@ export const useCVStore = create<CVStore>((set, get) => ({
           ],
         },
       };
-      // Guardar automáticamente
       persistenceService.saveData(newState.cvData, state.currentStep);
-      return newState;
+      return { ...newState, lastSavedAt: Date.now() };
     }),
 
   removeSkill: (id) =>
@@ -134,9 +132,8 @@ export const useCVStore = create<CVStore>((set, get) => ({
           skills: state.cvData.skills.filter((skill) => skill.id !== id),
         },
       };
-      // Guardar automáticamente
       persistenceService.saveData(newState.cvData, state.currentStep);
-      return newState;
+      return { ...newState, lastSavedAt: Date.now() };
     }),
 
   updateSkill: (id, skill) =>
@@ -149,9 +146,8 @@ export const useCVStore = create<CVStore>((set, get) => ({
           ),
         },
       };
-      // Guardar automáticamente
       persistenceService.saveData(newState.cvData, state.currentStep);
-      return newState;
+      return { ...newState, lastSavedAt: Date.now() };
     }),
 
   setExperiences: (experiences) =>
@@ -162,9 +158,8 @@ export const useCVStore = create<CVStore>((set, get) => ({
           experiences,
         },
       };
-      // Guardar automáticamente
       persistenceService.saveData(newState.cvData, state.currentStep);
-      return newState;
+      return { ...newState, lastSavedAt: Date.now() };
     }),
 
   addExperience: (experience) =>
@@ -182,9 +177,8 @@ export const useCVStore = create<CVStore>((set, get) => ({
           ],
         },
       };
-      // Guardar automáticamente
       persistenceService.saveData(newState.cvData, state.currentStep);
-      return newState;
+      return { ...newState, lastSavedAt: Date.now() };
     }),
 
   removeExperience: (id) =>
@@ -195,9 +189,8 @@ export const useCVStore = create<CVStore>((set, get) => ({
           experiences: state.cvData.experiences.filter((exp) => exp.id !== id),
         },
       };
-      // Guardar automáticamente
       persistenceService.saveData(newState.cvData, state.currentStep);
-      return newState;
+      return { ...newState, lastSavedAt: Date.now() };
     }),
 
   updateExperience: (id, experience) =>
@@ -210,9 +203,8 @@ export const useCVStore = create<CVStore>((set, get) => ({
           ),
         },
       };
-      // Guardar automáticamente
       persistenceService.saveData(newState.cvData, state.currentStep);
-      return newState;
+      return { ...newState, lastSavedAt: Date.now() };
     }),
 
   setEducation: (education) =>
@@ -223,9 +215,8 @@ export const useCVStore = create<CVStore>((set, get) => ({
           education,
         },
       };
-      // Guardar automáticamente
       persistenceService.saveData(newState.cvData, state.currentStep);
-      return newState;
+      return { ...newState, lastSavedAt: Date.now() };
     }),
 
   addEducation: (education) =>
@@ -243,9 +234,8 @@ export const useCVStore = create<CVStore>((set, get) => ({
           ],
         },
       };
-      // Guardar automáticamente
       persistenceService.saveData(newState.cvData, state.currentStep);
-      return newState;
+      return { ...newState, lastSavedAt: Date.now() };
     }),
 
   removeEducation: (id) =>
@@ -256,9 +246,8 @@ export const useCVStore = create<CVStore>((set, get) => ({
           education: state.cvData.education.filter((edu) => edu.id !== id),
         },
       };
-      // Guardar automáticamente
       persistenceService.saveData(newState.cvData, state.currentStep);
-      return newState;
+      return { ...newState, lastSavedAt: Date.now() };
     }),
 
   updateEducation: (id, education) =>
@@ -271,33 +260,29 @@ export const useCVStore = create<CVStore>((set, get) => ({
           ),
         },
       };
-      // Guardar automáticamente
       persistenceService.saveData(newState.cvData, state.currentStep);
-      return newState;
+      return { ...newState, lastSavedAt: Date.now() };
     }),
 
   setCurrentStep: (step) => {
-    set({ currentStep: step });
-    // Guardar el paso actual
     const state = get();
     persistenceService.saveData(state.cvData, step);
+    set({ currentStep: step, lastSavedAt: Date.now() });
   },
 
   nextStep: () => {
     set((state) => {
       const newStep = Math.min(state.currentStep + 1, 4);
-      // Guardar el paso actual
       persistenceService.saveData(state.cvData, newStep);
-      return { currentStep: newStep };
+      return { currentStep: newStep, lastSavedAt: Date.now() };
     });
   },
 
   prevStep: () => {
     set((state) => {
       const newStep = Math.max(state.currentStep - 1, 0);
-      // Guardar el paso actual
       persistenceService.saveData(state.cvData, newStep);
-      return { currentStep: newStep };
+      return { currentStep: newStep, lastSavedAt: Date.now() };
     });
   },
 
@@ -310,8 +295,8 @@ export const useCVStore = create<CVStore>((set, get) => ({
       cvData: initialCVData,
       currentStep: 0,
       error: null,
+      lastSavedAt: null,
     });
-    // Limpiar datos guardados
     persistenceService.clearData();
   },
 
@@ -336,12 +321,12 @@ export const useCVStore = create<CVStore>((set, get) => ({
   // Limpiar datos guardados
   clearStoredData: () => {
     persistenceService.clearData();
-    // También resetear el estado del store
     set({
       cvData: initialCVData,
       currentStep: 0,
       error: null,
       isDataRestored: false,
+      lastSavedAt: null,
     });
   },
 

@@ -47,7 +47,7 @@ export const SkillsForm = () => {
           disabled={!newSkill.trim() || cvData.skills.length >= 10}
           className={styles.addButton}
         >
-          <Plus size={16} />
+          <Plus size={16} aria-hidden />
           Agregar
         </Button>
       </div>
@@ -65,8 +65,9 @@ export const SkillsForm = () => {
                   size="sm"
                   onClick={() => handleRemoveSkill(skill.id)}
                   className={styles.removeButton}
+                  aria-label={`Eliminar habilidad ${skill.name}`}
                 >
-                  <X size={14} />
+                  <X size={14} aria-hidden />
                 </Button>
               </div>
             ))}

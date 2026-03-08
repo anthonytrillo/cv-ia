@@ -3,7 +3,7 @@ import { classNames } from '../../../utils/classNames';
 import styles from './Button.module.css';
 
 interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
-  variant?: 'primary' | 'secondary' | 'outline' | 'sampleData' | 'download';
+  variant?: 'primary' | 'secondary' | 'outline' | 'danger' | 'sampleData' | 'download';
   size?: 'sm' | 'md' | 'lg';
   loading?: boolean;
 }
@@ -29,9 +29,11 @@ export const Button = ({
     <button
       className={buttonClasses}
       disabled={disabled || loading}
+      aria-busy={loading}
+      aria-disabled={disabled}
       {...props}
     >
-      {loading && <span className={styles.spinner} />}
+      {loading && <span className={styles.spinner} aria-hidden />}
       {children}
     </button>
   );

@@ -68,27 +68,24 @@ El diseño está basado en un template profesional y limpio, con:
 ## 🚀 Instalación y Desarrollo
 
 ### Prerrequisitos
-- Node.js 18+ 
-- Yarn o npm
+- Node.js 18+
+- **Yarn** (gestor de paquetes estándar del proyecto)
+
+> Este proyecto usa **Yarn** de forma exclusiva. No uses `npm` para instalar o ejecutar scripts; mantén solo `yarn.lock` en el repositorio.
 
 ### Frontend
 ```bash
-# Navegar al directorio frontend
 cd frontend
-
-# Instalar dependencias
 yarn install
-
-# Ejecutar en modo desarrollo
 yarn dev
 ```
 
 ### Scripts disponibles
 ```bash
-yarn dev          # Ejecutar en modo desarrollo
-yarn build        # Construir para producción
-yarn preview      # Previsualizar build de producción
-yarn lint         # Ejecutar linter
+yarn dev          # Desarrollo
+yarn build        # Producción
+yarn preview      # Previsualizar build
+yarn lint         # Linter
 ```
 
 ## 🌐 Despliegue
@@ -108,8 +105,8 @@ Este proyecto está configurado para desplegarse automáticamente en GitHub Page
 3. **Despliegue manual**:
 ```bash
 cd frontend
-npm install --save-dev gh-pages
-npm run deploy
+yarn install
+yarn deploy
 ```
 
 📖 **Ver [DEPLOYMENT.md](DEPLOYMENT.md) para instrucciones detalladas**

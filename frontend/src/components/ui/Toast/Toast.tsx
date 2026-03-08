@@ -68,8 +68,13 @@ export const Toast = ({ message, type, duration = 3000, onClose }: ToastProps) =
         {getIcon()}
         <span className={styles.message}>{message}</span>
       </div>
-      <button onClick={handleClose} className={styles.closeButton}>
-        <X size={14} />
+      <button
+        type="button"
+        onClick={handleClose}
+        className={styles.closeButton}
+        aria-label="Cerrar notificación"
+      >
+        <X size={18} aria-hidden />
       </button>
       <div className={styles.progressBar}>
         <div

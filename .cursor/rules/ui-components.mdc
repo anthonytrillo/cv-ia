@@ -1,0 +1,27 @@
+---
+description: Estándares de componentes UI y accesibilidad
+globs: frontend/src/components/**/*.tsx
+alwaysApply: false
+---
+
+# Componentes UI y accesibilidad
+
+## Estilos
+- Usar **CSS Modules** (archivos `.module.css`) para estilos de componentes. No usar clases de Tailwind si el proyecto no tiene Tailwind instalado.
+- Usar variables CSS del proyecto: `var(--spacing-md)`, `var(--text-primary)`, `var(--color-primary)`, `var(--bg-card)`, etc.
+
+## Formularios
+- Cada campo debe tener `label` asociado (prop `label` en Input/Textarea o `<label htmlFor={id}>`).
+- Mostrar errores de validación **inline** bajo el campo (prop `error`), no con `alert()`.
+- Placeholders cortos y claros. Texto de ayuda opcional con `helperText`.
+
+## Accesibilidad
+- Botones con icono: incluir `aria-label` descriptivo y `aria-hidden` en el icono.
+- Modales: `role="dialog"`, `aria-modal="true"`, `aria-labelledby` apuntando al título. Cerrar con Escape.
+- Barras de progreso: `aria-valuenow`, `aria-valuemin`, `aria-valuemax`, `aria-label`.
+- Regiones: `role="region"` y `aria-label` cuando ayude a navegación por lectores de pantalla.
+
+## Feedback al usuario
+- Acciones destructivas (ej. "Eliminar todo"): usar modal de confirmación, no `confirm()` nativo.
+- Éxito/error: usar el sistema de Toast (ToastContext) en lugar de `alert()`.
+- Guardado automático: mostrar indicador breve "Guardado" cuando aplique.

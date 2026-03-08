@@ -3,6 +3,8 @@
   border: 1px solid var(--border-primary);
   border-radius: var(--border-radius-md);
   padding: var(--spacing-sm);
+  min-height: var(--touch-target-min);
+  min-width: var(--touch-target-min);
   cursor: pointer;
   transition: all 0.2s ease;
   display: flex;
@@ -10,6 +12,7 @@
   justify-content: center;
   color: var(--text-secondary);
   box-shadow: var(--shadow-sm);
+  -webkit-tap-highlight-color: transparent;
 }
 
 .themeToggle:hover {
@@ -33,8 +36,8 @@
   transform: rotate(15deg);
 }
 
-/* Focus styles for accessibility */
-.themeToggle:focus {
+/* Focus styles for accessibility (keyboard only) */
+.themeToggle:focus-visible {
   outline: 2px solid var(--border-focus);
   outline-offset: 2px;
 }

@@ -23,7 +23,7 @@ export const Input = ({
   const inputVariant = hasError ? 'error' : variant;
 
   return (
-    <div className={styles.container}>
+    <div className={styles.container} data-error={hasError ? 'true' : undefined}>
       {label && (
         <label htmlFor={inputId} className={styles.label}>
           {label}

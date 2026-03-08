@@ -1,3 +1,5 @@
+/* ========== BASE: MOBILE FIRST ========== */
+
 .container {
   display: flex;
   flex-direction: column;
@@ -6,13 +8,15 @@
 
 .addSkill {
   display: flex;
-  gap: var(--spacing-md);
-  align-items: flex-end;
+  flex-direction: column;
+  gap: var(--spacing-sm);
+  align-items: stretch;
 }
 
 .addButton {
+  width: 100%;
+  min-height: var(--touch-target-min);
   flex-shrink: 0;
-  height: 40px;
 }
 
 .skillsList {
@@ -20,7 +24,7 @@
 }
 
 .skillsTitle {
-  font-size: var(--font-size-lg);
+  font-size: var(--font-size-base);
   font-weight: 600;
   color: var(--color-gray-800);
   margin-bottom: var(--spacing-md);
@@ -28,7 +32,7 @@
 
 .skillsGrid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  grid-template-columns: 1fr;
   gap: var(--spacing-sm);
 }
 
@@ -37,6 +41,7 @@
   align-items: center;
   justify-content: space-between;
   padding: var(--spacing-sm) var(--spacing-md);
+  min-height: var(--touch-target-min);
   background-color: var(--color-gray-50);
   border: 1px solid var(--color-gray-200);
   border-radius: var(--border-radius-md);
@@ -44,16 +49,16 @@
 }
 
 .skillName {
-  font-size: var(--font-size-sm);
+  font-size: var(--font-size-base);
   color: var(--color-gray-700);
   flex: 1;
 }
 
 .removeButton {
   flex-shrink: 0;
+  min-width: var(--touch-target-min);
+  min-height: var(--touch-target-min);
   padding: var(--spacing-xs);
-  min-width: auto;
-  height: 28px;
 }
 
 .helpText {
@@ -70,18 +75,32 @@
   margin: 0;
 }
 
-/* Responsive */
-@media (max-width: 640px) {
+@media (min-width: 480px) {
   .addSkill {
-    flex-direction: column;
-    align-items: stretch;
+    flex-direction: row;
+    align-items: flex-end;
   }
 
   .addButton {
-    width: 100%;
+    width: auto;
+    min-height: 40px;
   }
 
   .skillsGrid {
-    grid-template-columns: 1fr;
+    grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+  }
+
+  .skillItem {
+    min-height: auto;
+    padding: var(--spacing-sm) var(--spacing-md);
+  }
+
+  .skillName {
+    font-size: var(--font-size-sm);
+  }
+
+  .removeButton {
+    min-width: auto;
+    min-height: 40px;
   }
 }

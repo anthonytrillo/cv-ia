@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { useCVStore } from '../../../store/cvStore';
+import { formatMonthYear } from '../../../utils/dateFormat';
 import { Input } from '../../ui/Input';
 import { Textarea } from '../../ui/Textarea';
 import { Button } from '../../ui/Button';
@@ -85,7 +86,7 @@ export const ExperienceForm = () => {
                   <h4 className={styles.jobTitle}>{experience.jobTitle}</h4>
                   <p className={styles.company}>{experience.company}</p>
                   <p className={styles.dates}>
-                    {experience.startDate} - {experience.isCurrent ? 'Presente' : experience.endDate}
+                    {formatMonthYear(experience.startDate) || experience.startDate} – {experience.isCurrent ? 'Presente' : (formatMonthYear(experience.endDate) || experience.endDate)}
                   </p>
                 </div>
                 <Button
@@ -94,8 +95,9 @@ export const ExperienceForm = () => {
                   size="sm"
                   onClick={() => handleRemoveExperience(experience.id)}
                   className={styles.removeButton}
+                  aria-label={`Eliminar experiencia ${experience.jobTitle}`}
                 >
-                  <Trash2 size={14} />
+                  <Trash2 size={14} aria-hidden />
                 </Button>
               </div>
             </div>
@@ -110,8 +112,9 @@ export const ExperienceForm = () => {
           variant="outline"
           onClick={() => setShowAddForm(true)}
           className={styles.addButton}
+          aria-label="Agregar nueva experiencia"
         >
-          <Plus size={16} />
+          <Plus size={16} aria-hidden />
           Agregar Experiencia
         </Button>
       ) : (
@@ -184,8 +187,9 @@ export const ExperienceForm = () => {
                     size="sm"
                     onClick={() => handleRemoveAchievement(index)}
                     className={styles.removeAchievementButton}
+                    aria-label="Eliminar logro"
                   >
-                    <X size={14} />
+                    <X size={14} aria-hidden />
                   </Button>
                 )}
               </div>
@@ -196,8 +200,9 @@ export const ExperienceForm = () => {
               size="sm"
               onClick={handleAddAchievement}
               className={styles.addAchievementButton}
+              aria-label="Agregar logro"
             >
-              <Plus size={14} />
+              <Plus size={14} aria-hidden />
               Agregar Logro
             </Button>
           </div>

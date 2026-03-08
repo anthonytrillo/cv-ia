@@ -1,12 +1,15 @@
+/* ========== BASE: MOBILE FIRST (touch-friendly) ========== */
+
 .button {
   display: inline-flex;
   align-items: center;
   justify-content: center;
   gap: var(--spacing-xs);
-  padding: var(--spacing-sm) var(--spacing-md);
+  min-height: var(--touch-target-min);
+  padding: var(--spacing-md) var(--spacing-lg);
   border: 1px solid transparent;
   border-radius: var(--border-radius-md);
-  font-size: var(--font-size-sm);
+  font-size: var(--font-size-base);
   font-weight: 500;
   cursor: pointer;
   transition: all 0.2s ease;
@@ -14,6 +17,7 @@
   font-family: inherit;
   line-height: 1;
   white-space: nowrap;
+  -webkit-tap-highlight-color: transparent;
 }
 
 .button:disabled {
@@ -22,7 +26,6 @@
   pointer-events: none;
 }
 
-/* Variants */
 .primary {
   background-color: var(--color-primary);
   color: var(--text-inverse);
@@ -32,7 +35,6 @@
 .primary:hover:not(:disabled) {
   background-color: var(--color-primary-dark);
   border-color: var(--color-primary-dark);
-  transform: translateY(-1px);
   box-shadow: var(--shadow-md);
 }
 
@@ -45,7 +47,6 @@
 .secondary:hover:not(:disabled) {
   background-color: var(--bg-tertiary);
   border-color: var(--border-secondary);
-  transform: translateY(-1px);
   box-shadow: var(--shadow-md);
 }
 
@@ -58,7 +59,18 @@
 .outline:hover:not(:disabled) {
   background-color: var(--bg-secondary);
   border-color: var(--border-secondary);
-  transform: translateY(-1px);
+  box-shadow: var(--shadow-md);
+}
+
+.danger {
+  background-color: var(--color-error);
+  color: var(--text-inverse);
+  border-color: var(--color-error);
+}
+
+.danger:hover:not(:disabled) {
+  background-color: var(--color-error-dark);
+  border-color: var(--color-error-dark);
   box-shadow: var(--shadow-md);
 }
 
@@ -71,7 +83,6 @@
 .sampleData:hover:not(:disabled) {
   background-color: var(--color-sample-data-dark);
   border-color: var(--color-sample-data-dark);
-  transform: translateY(-1px);
   box-shadow: var(--shadow-md);
 }
 
@@ -84,36 +95,88 @@
 .download:hover:not(:disabled) {
   background-color: var(--color-download-dark);
   border-color: var(--color-download-dark);
-  transform: translateY(-1px);
   box-shadow: var(--shadow-md);
 }
 
-/* Sizes */
+/* Sizes: sm = smaller touch target for dense UIs (e.g. list actions) */
 .sm {
+  min-height: 36px;
   padding: var(--spacing-xs) var(--spacing-sm);
-  font-size: var(--font-size-xs);
+  font-size: var(--font-size-sm);
 }
 
 .lg {
-  padding: var(--spacing-md) var(--spacing-lg);
-  font-size: var(--font-size-base);
+  min-height: 48px;
+  padding: var(--spacing-md) var(--spacing-xl);
+  font-size: var(--font-size-lg);
 }
 
-/* Focus styles for accessibility */
-.button:focus {
+/* Loading state */
+.loading {
+  position: relative;
+  color: transparent !important;
+  pointer-events: none;
+}
+
+.loading .spinner {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: 1.25em;
+  height: 1.25em;
+  margin-left: -0.625em;
+  margin-top: -0.625em;
+  border: 2px solid currentColor;
+  border-top-color: transparent;
+  border-radius: 50%;
+  animation: buttonSpin 0.7s linear infinite;
+}
+
+.button.primary.loading .spinner,
+.button.download.loading .spinner,
+.button.sampleData.loading .spinner,
+.button.danger.loading .spinner {
+  border-color: rgba(255, 255, 255, 0.35);
+  border-top-color: #fff;
+}
+
+@keyframes buttonSpin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.button:focus-visible {
   outline: 2px solid var(--border-focus);
   outline-offset: 2px;
 }
 
-/* Active state */
 .button:active:not(:disabled) {
-  transform: translateY(0);
-  box-shadow: var(--shadow-sm);
+  transform: scale(0.98);
 }
 
-/* Responsive */
-@media (max-width: 768px) {
+/* Desktop: reduce min-height for non-touch */
+@media (min-width: 768px) {
   .button {
+    min-height: 40px;
+    padding: var(--spacing-sm) var(--spacing-md);
     font-size: var(--font-size-sm);
+  }
+
+  .button:hover:not(:disabled) {
+    transform: translateY(-1px);
+  }
+
+  .button:active:not(:disabled) {
+    transform: translateY(0);
+  }
+
+  .sm {
+    min-height: 40px;
+  }
+
+  .lg {
+    min-height: 44px;
+    font-size: var(--font-size-base);
   }
 }
