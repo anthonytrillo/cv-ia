@@ -7,147 +7,189 @@ import {
   StyleSheet,
 } from '@react-pdf/renderer';
 import type { CVFormData } from '../../types/cv';
+import { formatMonthYear } from '../../utils/dateFormat';
 
-// Create professional styles
+/**
+ * Template CV optimizado para:
+ * - Escaneo rápido (6-10 seg) por reclutadores
+ * - Compatibilidad ATS (estructura simple, texto parseable)
+ * - 1 página ideal
+ * - Jerarquía visual clara
+ */
 const styles = StyleSheet.create({
+  // Page: compacto para caber en 1 página
   page: {
     flexDirection: 'column',
     backgroundColor: '#ffffff',
-    padding: 40,
+    paddingTop: 28,
+    paddingBottom: 28,
+    paddingLeft: 32,
+    paddingRight: 32,
     fontFamily: 'Helvetica',
+    fontSize: 10,
   },
+
+  // Header: nombre prominente, contacto compacto
   header: {
-    marginBottom: 30,
-    borderBottom: '2px solid #2563eb',
-    paddingBottom: 20,
+    marginBottom: 18,
+    borderBottomWidth: 1,
+    borderBottomColor: '#1d4ed8',
+    paddingBottom: 12,
   },
   name: {
-    fontSize: 28,
+    fontSize: 24,
     fontWeight: 'bold',
-    color: '#1f2937',
-    marginBottom: 8,
+    color: '#111827',
+    marginBottom: 4,
     textTransform: 'uppercase',
-    letterSpacing: 0.05,
+    letterSpacing: 0.5,
   },
   title: {
-    fontSize: 16,
-    color: '#2563eb',
-    marginBottom: 12,
+    fontSize: 12,
+    color: '#1d4ed8',
+    marginBottom: 8,
     fontWeight: 'bold',
   },
-  contactInfo: {
-    fontSize: 10,
-    color: '#6b7280',
-    textAlign: 'center',
+  contactItem: {
+    fontSize: 9,
+    color: '#4b5563',
   },
+
+  // Secciones: espaciado compacto
   section: {
-    marginBottom: 25,
+    marginBottom: 14,
   },
   sectionTitle: {
-    fontSize: 18,
-    fontWeight: 'bold',
-    color: '#1f2937',
-    marginBottom: 12,
-    borderBottom: '1px solid #e5e7eb',
-    paddingBottom: 6,
-    textTransform: 'uppercase',
-    letterSpacing: 0.05,
-  },
-  summary: {
     fontSize: 11,
-    lineHeight: 1.6,
-    color: '#374151',
-    textAlign: 'justify',
+    fontWeight: 'bold',
+    color: '#111827',
+    marginBottom: 8,
+    borderBottomWidth: 1,
+    borderBottomColor: '#e5e7eb',
+    paddingBottom: 4,
+    letterSpacing: 0.3,
   },
-  skillsContainer: {
-    flexDirection: 'row',
-    flexWrap: 'wrap',
-    gap: 8,
-  },
-  skill: {
-    backgroundColor: '#f3f4f6',
-    padding: '6px 12px',
-    borderRadius: 4,
+
+  // Resumen: 2-3 líneas, legible
+  summary: {
     fontSize: 10,
+    lineHeight: 1.5,
     color: '#374151',
-    marginBottom: 4,
+    textAlign: 'left',
   },
+
+  // Experiencia: jerarquía clara
   experienceItem: {
-    marginBottom: 20,
+    marginBottom: 14,
   },
   experienceHeader: {
     flexDirection: 'row',
     justifyContent: 'space-between',
-    alignItems: 'center',
-    marginBottom: 8,
+    alignItems: 'flex-start',
+    marginBottom: 4,
   },
   jobTitle: {
-    fontSize: 14,
+    fontSize: 11,
     fontWeight: 'bold',
-    color: '#1f2937',
-  },
-  company: {
-    fontSize: 12,
-    color: '#2563eb',
-    fontWeight: 'bold',
-    fontStyle: 'italic',
+    color: '#111827',
+    flex: 1,
   },
   date: {
-    fontSize: 10,
+    fontSize: 9,
     color: '#6b7280',
-    fontWeight: '500',
+  },
+  company: {
+    fontSize: 10,
+    color: '#1d4ed8',
+    fontStyle: 'italic',
+    marginBottom: 6,
   },
   description: {
-    fontSize: 10,
-    lineHeight: 1.5,
+    fontSize: 9,
+    lineHeight: 1.45,
     color: '#374151',
-    textAlign: 'justify',
-    marginBottom: 8,
+    marginBottom: 4,
   },
-  achievements: {
-    marginLeft: 15,
+  achievementsList: {
+    marginLeft: 0,
   },
   achievement: {
-    fontSize: 10,
+    fontSize: 9,
     color: '#374151',
     marginBottom: 2,
+    lineHeight: 1.4,
   },
+
+  // Skills: texto lineal (más ATS-friendly que chips)
+  skillsText: {
+    fontSize: 10,
+    color: '#374151',
+    lineHeight: 1.5,
+  },
+
+  // Educación
   educationItem: {
-    marginBottom: 15,
+    marginBottom: 12,
   },
   educationHeader: {
     flexDirection: 'row',
     justifyContent: 'space-between',
-    alignItems: 'center',
-    marginBottom: 6,
+    alignItems: 'flex-start',
+    marginBottom: 4,
   },
   degree: {
-    fontSize: 12,
+    fontSize: 10,
     fontWeight: 'bold',
-    color: '#1f2937',
-  },
-  institution: {
-    fontSize: 11,
-    color: '#2563eb',
-    fontStyle: 'italic',
+    color: '#111827',
+    flex: 1,
   },
   educationDate: {
-    fontSize: 10,
+    fontSize: 9,
     color: '#6b7280',
   },
+  institution: {
+    fontSize: 9,
+    color: '#1d4ed8',
+    fontStyle: 'italic',
+    marginBottom: 4,
+  },
   educationDescription: {
-    fontSize: 10,
+    fontSize: 9,
     lineHeight: 1.4,
     color: '#374151',
   },
 });
+
+function formatExperienceDate(
+  startDate: string,
+  endDate?: string,
+  isCurrent?: boolean
+): string {
+  const start = formatMonthYear(startDate) || startDate;
+  const end = isCurrent ? 'Presente' : formatMonthYear(endDate) || endDate || '';
+  return end ? `${start} – ${end}` : start;
+}
+
+function formatEducationDate(value?: string): string {
+  if (!value) return '';
+  return formatMonthYear(value) || value;
+}
 
 interface SimpleCVDocumentProps {
   cvData: CVFormData;
 }
 
 export const SimpleCVDocument: React.FC<SimpleCVDocumentProps> = ({ cvData }) => {
-  const { personalInfo, professionalSummary, skills, experiences, education } = cvData;
+  const { personalInfo, professionalSummary, skills, experiences, education } =
+    cvData;
+
+  const contactParts: string[] = [];
+  if (personalInfo.email) contactParts.push(personalInfo.email);
+  if (personalInfo.phone) contactParts.push(personalInfo.phone);
+  if (personalInfo.linkedin) contactParts.push(personalInfo.linkedin);
+  const contactString = contactParts.join(' · ');
+
+  const skillsString = skills.map((s) => s.name).join(' · ');
 
   return (
     <Document>
@@ -160,14 +202,12 @@ export const SimpleCVDocument: React.FC<SimpleCVDocumentProps> = ({ cvData }) =>
           <Text style={styles.title}>
             {personalInfo.professionalTitle || 'Título Profesional'}
           </Text>
-          <View style={{ flexDirection: 'row', justifyContent: 'center', gap: 20 }}>
-            {personalInfo.email && <Text style={styles.contactInfo}>{personalInfo.email}</Text>}
-            {personalInfo.phone && <Text style={styles.contactInfo}>{personalInfo.phone}</Text>}
-            {personalInfo.linkedin && <Text style={styles.contactInfo}>{personalInfo.linkedin}</Text>}
-          </View>
+          {contactString ? (
+            <Text style={styles.contactItem}>{contactString}</Text>
+          ) : null}
         </View>
 
-        {/* Professional Summary */}
+        {/* Resumen Profesional */}
         {professionalSummary.summary && (
           <View style={styles.section}>
             <Text style={styles.sectionTitle}>Resumen Profesional</Text>
@@ -175,51 +215,49 @@ export const SimpleCVDocument: React.FC<SimpleCVDocumentProps> = ({ cvData }) =>
           </View>
         )}
 
-        {/* Skills */}
-        {skills.length > 0 && (
-          <View style={styles.section}>
-            <Text style={styles.sectionTitle}>Habilidades</Text>
-            <View style={styles.skillsContainer}>
-              {skills.map((skill, index) => (
-                <Text key={index} style={styles.skill}>
-                  {skill.name}
-                </Text>
-              ))}
-            </View>
-          </View>
-        )}
-
-        {/* Experience */}
+        {/* Experiencia (antes que Skills - prioridad para reclutadores) */}
         {experiences.length > 0 && (
           <View style={styles.section}>
             <Text style={styles.sectionTitle}>Experiencia Profesional</Text>
-            {experiences.map((experience, index) => (
+            {experiences.map((exp, index) => (
               <View key={index} style={styles.experienceItem}>
                 <View style={styles.experienceHeader}>
-                  <Text style={styles.jobTitle}>{experience.jobTitle}</Text>
+                  <Text style={styles.jobTitle}>{exp.jobTitle}</Text>
                   <Text style={styles.date}>
-                    {experience.startDate} - {experience.endDate || 'Presente'}
+                    {formatExperienceDate(
+                      exp.startDate,
+                      exp.endDate,
+                      exp.isCurrent
+                    )}
                   </Text>
                 </View>
-                <Text style={styles.company}>{experience.company}</Text>
-                {experience.description && (
-                  <Text style={styles.description}>{experience.description}</Text>
-                )}
-                {experience.achievements && experience.achievements.length > 0 && (
-                  <View style={styles.achievements}>
-                    {experience.achievements.map((achievement, achievementIndex) => (
-                      <Text key={achievementIndex} style={styles.achievement}>
-                        • {achievement}
+                <Text style={styles.company}>{exp.company}</Text>
+                {exp.description ? (
+                  <Text style={styles.description}>{exp.description}</Text>
+                ) : null}
+                {exp.achievements && exp.achievements.length > 0 ? (
+                  <View style={styles.achievementsList}>
+                    {exp.achievements.map((a, i) => (
+                      <Text key={i} style={styles.achievement}>
+                        • {a}
                       </Text>
                     ))}
                   </View>
-                )}
+                ) : null}
               </View>
             ))}
           </View>
         )}
 
-        {/* Education */}
+        {/* Habilidades (texto lineal, ATS-friendly) */}
+        {skills.length > 0 && (
+          <View style={styles.section}>
+            <Text style={styles.sectionTitle}>Habilidades</Text>
+            <Text style={styles.skillsText}>{skillsString}</Text>
+          </View>
+        )}
+
+        {/* Educación */}
         {education.length > 0 && (
           <View style={styles.section}>
             <Text style={styles.sectionTitle}>Educación</Text>
@@ -228,24 +266,24 @@ export const SimpleCVDocument: React.FC<SimpleCVDocumentProps> = ({ cvData }) =>
                 <View style={styles.educationHeader}>
                   <Text style={styles.degree}>{edu.degree}</Text>
                   <Text style={styles.educationDate}>
-                    {edu.completionDate}
+                    {formatEducationDate(edu.completionDate)}
                   </Text>
                 </View>
                 <Text style={styles.institution}>{edu.institution}</Text>
-                {edu.description && (
+                {edu.description ? (
                   <Text style={styles.educationDescription}>
                     {edu.description}
                   </Text>
-                )}
-                {edu.highlights && edu.highlights.length > 0 && (
-                  <View style={styles.achievements}>
-                    {edu.highlights.map((highlight, highlightIndex) => (
-                      <Text key={highlightIndex} style={styles.achievement}>
-                        • {highlight}
+                ) : null}
+                {edu.highlights && edu.highlights.length > 0 ? (
+                  <View style={styles.achievementsList}>
+                    {edu.highlights.map((h, i) => (
+                      <Text key={i} style={styles.achievement}>
+                        • {h}
                       </Text>
                     ))}
                   </View>
-                )}
+                ) : null}
               </View>
             ))}
           </View>
@@ -253,4 +291,4 @@ export const SimpleCVDocument: React.FC<SimpleCVDocumentProps> = ({ cvData }) =>
       </Page>
     </Document>
   );
-}; 
+};
