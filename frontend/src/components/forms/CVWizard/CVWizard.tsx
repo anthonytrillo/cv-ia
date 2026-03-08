@@ -153,7 +153,7 @@ export const CVWizard = ({ onGoToPreview }: { onGoToPreview?: () => void }) => {
 
       <div className={styles.navigation}>
         <Button
-          variant="outline"
+          variant="secondary"
           onClick={handlePrev}
           disabled={isFirstStep}
           className={styles.navButton}
