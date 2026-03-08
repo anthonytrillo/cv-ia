@@ -13,6 +13,10 @@ app.use(
 );
 app.use(express.json({ limit: '10kb' }));
 
+app.get('/', (_req, res) => {
+  res.json({ status: 'ok', service: 'cv-ia-api' });
+});
+
 app.use('/api/ai', aiRouter);
 
 app.listen(port, () => {
