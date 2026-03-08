@@ -4,6 +4,34 @@
   gap: var(--spacing-lg);
 }
 
+.improveSection {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-sm);
+}
+
+.improveButton {
+  width: 100%;
+  min-height: var(--touch-target-min);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--spacing-sm);
+}
+
+@media (min-width: 768px) {
+  .improveButton {
+    width: auto;
+    align-self: flex-start;
+  }
+}
+
+.microcopy {
+  font-size: var(--font-size-sm);
+  color: var(--text-secondary);
+  margin: 0;
+}
+
 .tip {
   font-size: var(--font-size-sm);
   color: var(--text-secondary);

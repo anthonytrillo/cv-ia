@@ -11,6 +11,7 @@ Una aplicación web moderna para crear currículums vitae profesionales de forma
 - **Sin registro**: No requiere autenticación para usar la aplicación
 - **Gratuito**: Completamente gratuito sin limitaciones
 - **Generación de PDF**: Descarga tu CV en formato PDF profesional
+- **✨ Mejorar con IA**: Botón en Resumen Profesional para mejorar el texto con Groq (llama-3.1-8b-instant)
 
 ## 🛠️ Stack Tecnológico
 
@@ -21,10 +22,10 @@ Una aplicación web moderna para crear currículums vitae profesionales de forma
 - **CSS Modules** + Variables CSS personalizadas
 - **Lucide React** (iconos)
 
-### Backend (Próximamente)
-- **NestJS** (backend API)
-- **Supabase** (base de datos)
-- **PDF Generation** (generación de PDFs)
+### Backend (IA)
+- **Express** + **TypeScript** (API para mejorar resumen con IA)
+- **Groq** (llama-3.1-8b-instant) para mejoras de texto
+- **Rate limiting** y sanitización de inputs
 
 ## 📋 Estructura del CV
 
@@ -79,6 +80,17 @@ cd frontend
 yarn install
 yarn dev
 ```
+
+### Backend (para "Mejorar con IA")
+```bash
+cd backend
+cp .env.example .env
+# Edita .env y añade tu GROQ_API_KEY (gratuita en groq.com)
+yarn install
+yarn dev
+```
+
+En desarrollo, el frontend hace proxy de `/api` al backend en `localhost:3001`.
 
 ### Scripts disponibles
 ```bash
