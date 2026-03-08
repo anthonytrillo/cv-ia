@@ -1,5 +1,8 @@
 import { useState } from 'react';
+import { Sparkles } from 'lucide-react';
 import { useCVStore } from '../../../store/cvStore';
+import { useToastContext } from '../../../contexts/ToastContext';
+import { useImproveDescription } from '../../../hooks/useImproveDescription';
 import { formatMonthYear } from '../../../utils/dateFormat';
 import { Input } from '../../ui/Input';
 import { Textarea } from '../../ui/Textarea';
@@ -7,8 +10,11 @@ import { Button } from '../../ui/Button';
 import { Plus, X, Trash2 } from 'lucide-react';
 import styles from './ExperienceForm.module.css';
 
+const MIN_CHARS = 20;
+
 export const ExperienceForm = () => {
   const { cvData, addExperience, removeExperience } = useCVStore();
+  const { showError } = useToastContext();
   const [showAddForm, setShowAddForm] = useState(false);
   const [newExperience, setNewExperience] = useState({
     jobTitle: '',
@@ -71,6 +77,24 @@ export const ExperienceForm = () => {
         i === index ? value : achievement
       ),
     }));
+  };
+
+  const { improve, isLoading } = useImproveDescription({
+    onSuccess: (text) => {
+      setNewExperience(prev => ({ ...prev, description: text }));
+    },
+    onError: (msg) => showError(msg),
+  });
+
+  const canImprove =
+    newExperience.description.trim().length >= MIN_CHARS && !isLoading;
+
+  const handleImproveDescription = () => {
+    if (!canImprove) return;
+    improve({
+      jobTitle: newExperience.jobTitle,
+      currentDescription: newExperience.description,
+    });
   };
 
   return (
@@ -163,13 +187,41 @@ export const ExperienceForm = () => {
             </div>
           </div>
 
-          <Textarea
-            label="Descripción"
-            placeholder="Describe tus responsabilidades en atención al cliente, canales de atención y tipo de consultas que manejabas"
-            value={newExperience.description}
-            onChange={(e) => setNewExperience(prev => ({ ...prev, description: e.target.value }))}
-            rows={3}
-          />
+          <div
+            className={styles.descriptionSection}
+            role="region"
+            aria-label="Descripción de la experiencia"
+            aria-live="polite"
+            aria-busy={isLoading}
+          >
+            <Textarea
+              label="Descripción"
+              placeholder="Describe tus responsabilidades en atención al cliente, canales de atención y tipo de consultas que manejabas"
+              value={newExperience.description}
+              onChange={(e) => setNewExperience(prev => ({ ...prev, description: e.target.value }))}
+              rows={3}
+              readOnly={isLoading}
+            />
+            <div className={styles.improveSection}>
+              <Button
+                type="button"
+                variant="secondary"
+                className={styles.improveButton}
+                onClick={handleImproveDescription}
+                disabled={!canImprove}
+                loading={isLoading}
+                aria-label={
+                  isLoading ? 'Mejorando descripción con IA' : 'Mejorar descripción con IA'
+                }
+              >
+                {!isLoading && <Sparkles aria-hidden size={18} />}
+                {isLoading ? 'Mejorando...' : 'Mejorar con IA'}
+              </Button>
+              <p className={styles.microcopy}>
+                La IA mejora tu texto manteniendo tu experiencia profesional.
+              </p>
+            </div>
+          </div>
 
           <div className={styles.achievementsSection}>
             <label className={styles.achievementsLabel}>Logros Principales</label>

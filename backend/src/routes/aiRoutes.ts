@@ -1,9 +1,14 @@
 import { Router } from 'express';
 import rateLimit from 'express-rate-limit';
-import { improveSummaryHandler } from '../services/groqService.js';
+import {
+  improveSummaryHandler,
+  improveDescriptionHandler,
+} from '../services/groqService.js';
 import {
   sanitizeImproveBody,
   validateImproveBody,
+  sanitizeImproveDescriptionBody,
+  validateImproveDescriptionBody,
 } from './improveSchema.js';
 
 const limiter = rateLimit({
@@ -25,6 +30,25 @@ router.post('/improve-summary', limiter, async (req, res) => {
     });
 
     res.json({ improvedSummary: result });
+  } catch (err: unknown) {
+    const code = (err as Error & { status?: number })?.status ?? 500;
+    res.status(code).json({
+      message: (err as Error).message ?? 'Error interno',
+    });
+  }
+});
+
+router.post('/improve-description', limiter, async (req, res) => {
+  try {
+    const raw = sanitizeImproveDescriptionBody(req.body);
+    const validated = validateImproveDescriptionBody(raw);
+
+    const result = await improveDescriptionHandler(validated, {
+      timeout: 12000,
+      maxTokens: 400,
+    });
+
+    res.json({ improvedDescription: result });
   } catch (err: unknown) {
     const code = (err as Error & { status?: number })?.status ?? 500;
     res.status(code).json({

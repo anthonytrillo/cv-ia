@@ -39,3 +39,27 @@ export function validateImproveBody(
   }
   return raw;
 }
+
+const MAX_DESC_LEN = 1500;
+
+export function sanitizeImproveDescriptionBody(body: unknown) {
+  const o =
+    body && typeof body === 'object' ? (body as Record<string, unknown>) : {};
+  return {
+    jobTitle: stripHtmlScript(String(o.jobTitle ?? '').slice(0, MAX_LEN.jobTitle)),
+    currentDescription: stripHtmlScript(
+      String(o.currentDescription ?? '').slice(0, MAX_DESC_LEN)
+    ),
+  };
+}
+
+export function validateImproveDescriptionBody(
+  raw: ReturnType<typeof sanitizeImproveDescriptionBody>
+) {
+  if (raw.currentDescription.length < 20) {
+    const err = new Error('La descripción debe tener al menos 20 caracteres');
+    (err as Error & { status: number }).status = 400;
+    throw err;
+  }
+  return raw;
+}

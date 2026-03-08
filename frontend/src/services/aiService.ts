@@ -41,3 +41,43 @@ export async function improveSummary(
     throw e;
   }
 }
+
+export interface ImproveDescriptionRequest {
+  jobTitle: string;
+  currentDescription: string;
+}
+
+export interface ImproveDescriptionResponse {
+  improvedDescription: string;
+}
+
+export async function improveDescription(
+  params: ImproveDescriptionRequest
+): Promise<string> {
+  const controller = new AbortController();
+  const timeoutId = setTimeout(() => controller.abort(), 15000);
+
+  try {
+    const res = await fetch(`${API_BASE}/api/ai/improve-description`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(params),
+      signal: controller.signal,
+    });
+
+    clearTimeout(timeoutId);
+
+    if (!res.ok) {
+      const err = await res.json().catch(() => ({}));
+      throw new Error(
+        (err as { message?: string }).message ?? `Error ${res.status}`
+      );
+    }
+
+    const data: ImproveDescriptionResponse = await res.json();
+    return data.improvedDescription ?? '';
+  } catch (e) {
+    clearTimeout(timeoutId);
+    throw e;
+  }
+}
