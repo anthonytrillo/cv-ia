@@ -66,6 +66,13 @@
   gap: var(--spacing-sm);
 }
 
+/* En web: ThemeToggle alineado a la derecha */
+@media (min-width: 480px) {
+  .resetAndTheme {
+    margin-left: auto;
+  }
+}
+
 .resetLink {
   background: none;
   border: none;
