@@ -2,13 +2,13 @@ import { useState } from 'react';
 import { useCVStore } from '../../../store/cvStore';
 import { useToastContext } from '../../../contexts/ToastContext';
 import { Button } from '../../ui/Button';
-import { Download, FileText } from 'lucide-react';
+import { Download, FileText, Pencil } from 'lucide-react';
 import { downloadPDF } from '../../../services/pdfService';
 import { sampleCVData } from '../../../utils/sampleData';
 import { formatMonthYear } from '../../../utils/dateFormat';
 import styles from './CVPreview.module.css';
 
-export const CVPreview = () => {
+export const CVPreview = ({ onGoToEdit }: { onGoToEdit?: () => void }) => {
   const { cvData, setPersonalInfo, setProfessionalSummary, setSkills, setExperiences, setEducation } = useCVStore();
   const { showSuccess, showError } = useToastContext();
   const { personalInfo, professionalSummary, skills, experiences, education } = cvData;
@@ -40,6 +40,17 @@ export const CVPreview = () => {
     <div className={styles.cvPreview}>
       <div className={styles.downloadSection}>
         <div className={styles.buttonGroup}>
+          {onGoToEdit && (
+            <Button
+              onClick={onGoToEdit}
+              variant="outline"
+              size="md"
+              aria-label="Volver a editar el formulario"
+            >
+              <Pencil size={16} aria-hidden />
+              Editar
+            </Button>
+          )}
           <Button
             onClick={handleDownloadPDF}
             loading={isDownloading}

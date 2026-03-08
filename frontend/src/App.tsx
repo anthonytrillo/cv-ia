@@ -114,7 +114,7 @@ function AppContent() {
           </div>
         ) : (
           <div className={styles.previewContainer}>
-            <CVPreview />
+            <CVPreview onGoToEdit={() => setViewMode('form')} />
           </div>
         )}
       </main>
