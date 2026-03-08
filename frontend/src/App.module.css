@@ -59,6 +59,35 @@
   color: var(--color-success);
 }
 
+.resetAndTheme {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: var(--spacing-sm);
+}
+
+.resetLink {
+  background: none;
+  border: none;
+  font-size: var(--font-size-sm);
+  color: var(--text-secondary);
+  cursor: pointer;
+  text-decoration: underline;
+  text-underline-offset: 2px;
+  padding: var(--spacing-xs) var(--spacing-sm);
+  -webkit-tap-highlight-color: transparent;
+}
+
+.resetLink:hover {
+  color: var(--color-error);
+}
+
+.resetLink:focus-visible {
+  outline: 2px solid var(--border-focus);
+  outline-offset: 2px;
+  border-radius: var(--border-radius-sm);
+}
+
 .viewToggle {
   display: flex;
   width: 100%;

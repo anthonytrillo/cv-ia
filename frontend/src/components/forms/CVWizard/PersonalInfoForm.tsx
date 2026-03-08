@@ -56,7 +56,14 @@ export const PersonalInfoForm = () => {
   // Watch form values and update store automatically
   const watchedValues = watch();
   React.useEffect(() => {
-    // Only update if we have meaningful data and it's different from current store data
+    // No sincronizar form → store si el store está vacío (acabamos de limpiar).
+    // Evita que el watch restaure datos antes de que reset() actualice el formulario.
+    const storeIsCleared =
+      !cvData.personalInfo.fullName?.trim() &&
+      !cvData.personalInfo.email?.trim() &&
+      !cvData.personalInfo.phone?.trim() &&
+      !cvData.personalInfo.professionalTitle?.trim();
+
     const hasValidData = watchedValues.fullName && watchedValues.email && watchedValues.phone && watchedValues.professionalTitle;
     const isDifferentFromStore =
       watchedValues.fullName !== cvData.personalInfo.fullName ||
@@ -65,7 +72,7 @@ export const PersonalInfoForm = () => {
       watchedValues.professionalTitle !== cvData.personalInfo.professionalTitle ||
       watchedValues.linkedin !== cvData.personalInfo.linkedin;
 
-    if (hasValidData && isDifferentFromStore) {
+    if (hasValidData && isDifferentFromStore && !storeIsCleared) {
       setPersonalInfo({
         ...watchedValues,
         linkedin: watchedValues.linkedin || '',

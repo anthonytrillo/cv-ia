@@ -93,35 +93,6 @@
   border-width: 1px;
 }
 
-.clearDataSection {
-  display: flex;
-  justify-content: center;
-  padding-top: var(--spacing-lg);
-  border-top: 1px solid var(--border-primary);
-}
-
-.clearDataButton {
-  min-height: var(--touch-target-min);
-  padding: var(--spacing-sm) var(--spacing-md);
-  display: flex;
-  align-items: center;
-  gap: var(--spacing-xs);
-  color: var(--color-error);
-  border-color: var(--color-error);
-  -webkit-tap-highlight-color: transparent;
-}
-
-.clearDataButton:hover,
-.clearDataButton.outline:hover {
-  background-color: var(--color-error) !important;
-  color: white !important;
-  border-color: var(--color-error) !important;
-}
-
-.clearDataButton:active {
-  transform: translateY(0);
-}
-
 /* ========== TABLET+ ========== */
 @media (min-width: 768px) {
   .wizard {

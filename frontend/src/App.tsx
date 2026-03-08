@@ -5,7 +5,7 @@ import { usePersistence } from './hooks/usePersistence';
 import { useCVStore } from './store/cvStore';
 import { ThemeProvider } from './contexts/ThemeContext';
 import { ToastProvider, useToastContext } from './contexts/ToastContext';
-import { ThemeToggle } from './components/ui';
+import { ThemeToggle, Button, Modal } from './components/ui';
 import { CheckCircle2 } from 'lucide-react';
 import styles from './App.module.css';
 
@@ -36,14 +36,21 @@ function SavedIndicator() {
 
 function AppContent() {
   const [viewMode, setViewMode] = useState<'form' | 'preview'>('form');
+  const [showClearModal, setShowClearModal] = useState(false);
   const { showSuccess, showError } = useToastContext();
+  const clearStoredData = useCVStore((s) => s.clearStoredData);
 
   const showToastWrapper = (message: string, type?: 'success' | 'error' | 'info') => {
     if (type === 'error') showError(message);
     else showSuccess(message);
   };
 
-  const { isInitialized } = usePersistence(showToastWrapper);
+  const { isInitialized, hasStoredData } = usePersistence(showToastWrapper);
+
+  const handleClearData = () => {
+    setShowClearModal(false);
+    clearStoredData();
+  };
 
   if (!isInitialized) {
     return (
@@ -61,7 +68,19 @@ function AppContent() {
           <h1 className={styles.title}>CV Builder</h1>
           <div className={styles.headerControls}>
             <SavedIndicator />
-            <ThemeToggle />
+            <div className={styles.resetAndTheme}>
+              {hasStoredData && (
+                <button
+                  type="button"
+                  className={styles.resetLink}
+                  onClick={() => setShowClearModal(true)}
+                  aria-label="Borrar todo y empezar de cero"
+                >
+                  Empezar de cero
+                </button>
+              )}
+              <ThemeToggle />
+            </div>
             <div className={styles.viewToggle} role="tablist" aria-label="Vista">
               <button
                 role="tab"
@@ -99,6 +118,28 @@ function AppContent() {
           </div>
         )}
       </main>
+
+      <Modal
+        isOpen={showClearModal}
+        onClose={() => setShowClearModal(false)}
+        title="¿Borrar todo y empezar de cero?"
+      >
+        <p style={{ marginBottom: '1rem', color: 'var(--text-secondary)' }}>
+          Se eliminará toda la información guardada. Esta acción no se puede deshacer.
+        </p>
+        <div style={{ display: 'flex', gap: '0.75rem', justifyContent: 'flex-end' }}>
+          <Button variant="outline" onClick={() => setShowClearModal(false)}>
+            Cancelar
+          </Button>
+          <Button
+            variant="danger"
+            onClick={handleClearData}
+            aria-label="Confirmar borrado de todos los datos"
+          >
+            Borrar todo
+          </Button>
+        </div>
+      </Modal>
 
       <footer className={styles.footer}>
         <div className={styles.footerContent}>

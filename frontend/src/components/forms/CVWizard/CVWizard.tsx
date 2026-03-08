@@ -1,6 +1,5 @@
 import { useState, useEffect, useRef } from 'react';
 import { useCVStore } from '../../../store/cvStore';
-import { usePersistence } from '../../../hooks/usePersistence';
 import { useToastContext } from '../../../contexts/ToastContext';
 import { PersonalInfoForm } from './PersonalInfoForm';
 import { ProfessionalSummaryForm } from './ProfessionalSummaryForm';
@@ -9,8 +8,7 @@ import { ExperienceForm } from './ExperienceForm';
 import { EducationForm } from './EducationForm';
 import { Button } from '../../ui/Button';
 import { Card } from '../../ui/Card';
-import { Modal } from '../../ui/Modal';
-import { ChevronLeft, ChevronRight, Download, Trash2, Eye } from 'lucide-react';
+import { ChevronLeft, ChevronRight, Download, Eye } from 'lucide-react';
 import styles from './CVWizard.module.css';
 import { downloadPDF } from '../../../services/pdfService';
 
@@ -34,14 +32,11 @@ function isPersonalInfoValid(pi: { fullName: string; email: string; phone: strin
 }
 
 export const CVWizard = ({ onGoToPreview }: { onGoToPreview?: () => void }) => {
-  const { currentStep, nextStep, prevStep, cvData, clearStoredData } = useCVStore();
+  const { currentStep, nextStep, prevStep, cvData } = useCVStore();
   const { showError } = useToastContext();
   const [isFormValid, setIsFormValid] = useState(false);
   const [canDownload, setCanDownload] = useState(false);
-  const [showClearModal, setShowClearModal] = useState(false);
   const formCardRef = useRef<HTMLDivElement>(null);
-
-  const { hasStoredData } = usePersistence(() => {});
 
   const CurrentStepComponent = STEPS[currentStep].component;
   const isFirstStep = currentStep === 0;
@@ -117,11 +112,6 @@ export const CVWizard = ({ onGoToPreview }: { onGoToPreview?: () => void }) => {
       console.error('Error downloading PDF:', error);
       showError('Error al descargar el PDF. Inténtalo de nuevo.');
     }
-  };
-
-  const handleClearData = () => {
-    setShowClearModal(false);
-    clearStoredData();
   };
 
   return (
@@ -202,37 +192,6 @@ export const CVWizard = ({ onGoToPreview }: { onGoToPreview?: () => void }) => {
         </div>
       </div>
 
-      {hasStoredData && (
-        <div className={styles.clearDataSection}>
-          <Button
-            variant="outline"
-            onClick={() => setShowClearModal(true)}
-            className={styles.clearDataButton}
-            aria-label="Eliminar todos los datos guardados"
-          >
-            <Trash2 size={16} aria-hidden />
-            Limpiar datos
-          </Button>
-        </div>
-      )}
-
-      <Modal
-        isOpen={showClearModal}
-        onClose={() => setShowClearModal(false)}
-        title="¿Eliminar todos los datos?"
-      >
-        <p style={{ marginBottom: '1rem', color: 'var(--text-secondary)' }}>
-          Se borrará toda la información guardada. Esta acción no se puede deshacer.
-        </p>
-        <div style={{ display: 'flex', gap: '0.75rem', justifyContent: 'flex-end' }}>
-          <Button variant="outline" onClick={() => setShowClearModal(false)}>
-            Cancelar
-          </Button>
-          <Button variant="danger" onClick={handleClearData} aria-label="Confirmar eliminación de todos los datos">
-            Eliminar todo
-          </Button>
-        </div>
-      </Modal>
     </div>
   );
 };
