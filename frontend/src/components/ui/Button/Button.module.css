@@ -140,6 +140,13 @@
   border-top-color: #fff;
 }
 
+/* secondary / outline: parent uses color:transparent for loading — spinner needs explicit colors */
+.button.secondary.loading .spinner,
+.button.outline.loading .spinner {
+  border-color: var(--border-secondary);
+  border-top-color: var(--color-primary);
+}
+
 @keyframes buttonSpin {
   to {
     transform: rotate(360deg);

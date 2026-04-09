@@ -1,4 +1,4 @@
-import { useState, useCallback } from 'react';
+import { useState, useCallback, useRef } from 'react';
 import { improveSummary } from '../services/aiService';
 
 interface UseImproveSummaryParams {
@@ -11,6 +11,7 @@ export function useImproveSummary({
   onError,
 }: UseImproveSummaryParams) {
   const [isLoading, setIsLoading] = useState(false);
+  const busyRef = useRef(false);
 
   const improve = useCallback(
     async (params: {
@@ -19,7 +20,8 @@ export function useImproveSummary({
       experience: string;
       skills: string;
     }) => {
-      if (isLoading) return;
+      if (busyRef.current) return;
+      busyRef.current = true;
       setIsLoading(true);
 
       try {
@@ -28,10 +30,11 @@ export function useImproveSummary({
       } catch {
         onError('No pudimos mejorar el texto. Intenta nuevamente.');
       } finally {
+        busyRef.current = false;
         setIsLoading(false);
       }
     },
-    [isLoading, onSuccess, onError]
+    [onSuccess, onError]
   );
 
   return { improve, isLoading };
